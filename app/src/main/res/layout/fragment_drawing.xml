@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thành viên C: Drawing App &amp; Dynamic Charts"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
+        android:gravity="center"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bảng vẽ tùy chỉnh cọ/màu và Biểu đồ động Canvas."
+        android:textSize="14sp"
+        android:gravity="center"
+        android:paddingBottom="16dp"/>
+
+    <com.example.myapplication.feature_drawing_charts.DrawingCanvasView
+        android:id="@+id/drawingView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:layout_marginBottom="8dp"/>
+
+    <com.example.myapplication.feature_drawing_charts.DynamicChartView
+        android:id="@+id/chartView"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="#FAFAFA"/>
+
+</LinearLayout>

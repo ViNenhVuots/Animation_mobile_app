@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_physics"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="@string/menu_physics" />
+    <item
+        android:id="@+id/nav_simulation"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:title="@string/menu_simulation" />
+    <item
+        android:id="@+id/nav_drawing"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/menu_drawing" />
+</menu>
