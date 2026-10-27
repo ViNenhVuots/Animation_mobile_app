@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Animation &amp; Canvas Demo</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_physics">Physics &amp; Anim</string>
+    <string name="menu_simulation">Simulation</string>
+    <string name="menu_drawing">Drawing &amp; Charts</string>
+</resources>

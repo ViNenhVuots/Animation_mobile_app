@@ -1,0 +1,140 @@
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F7FC"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
+
+    <!-- HEADER -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SCIENCE LAB"
+        android:textColor="#4355C7"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Particle Simulation"
+        android:textColor="#19243C"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:text="Fire &amp; Water  •  Interactive Particles"
+        android:textColor="#64748B"
+        android:textSize="13sp"
+        android:gravity="center"/>
+
+    <!-- MAIN SIMULATION CARD -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:padding="12dp"
+        android:elevation="3dp">
+
+        <!-- CARD HEADER -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Particle Playground"
+            android:textColor="#19243C"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            android:text="Chạm và kéo để tạo hiệu ứng hạt"
+            android:textColor="#64748B"
+            android:textSize="12sp"/>
+
+        <!-- PARTICLE CANVAS -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#0D1424"
+            android:clipChildren="true"
+            android:clipToPadding="true">
+
+            <com.example.myapplication.feature_simulation.ParticleFireWaterView
+                android:id="@+id/particleView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </FrameLayout>
+
+        <!-- CURRENT MODE -->
+        <TextView
+            android:id="@+id/txtMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="12dp"
+            android:text="Current Mode: FIRE"
+            android:textColor="#E46B63"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <!-- CONTROL BUTTONS -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnFire"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="FIRE"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#E46B63"
+                android:textSize="12sp"/>
+
+            <Button
+                android:id="@+id/btnWater"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="WATER"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#4355C7"
+                android:textSize="12sp"/>
+
+            <Button
+                android:id="@+id/btnClear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="CLEAR"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#64748B"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
