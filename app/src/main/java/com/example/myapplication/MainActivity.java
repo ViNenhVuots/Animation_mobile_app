@@ -18,6 +18,13 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
+    // Giữ 4 instance cố định của các Fragment
+    private Fragment homeFragment = new HomeFragment();
+    private Fragment physicsFragment = new PhysicsAnimationFragment();
+    private Fragment simulationFragment = new SimulationFragment();
+    private Fragment drawingFragment = new DrawingFragment();
+    private Fragment activeFragment = homeFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,30 +39,62 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Load default fragment (HOME)
+        // Khởi tạo các Fragment vào container bằng show/hide để giữ nguyên trạng thái
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.navHostFragment, new HomeFragment())
+                    .add(R.id.navHostFragment, homeFragment, "HOME")
+                    .add(R.id.navHostFragment, physicsFragment, "PHYSICS").hide(physicsFragment)
+                    .add(R.id.navHostFragment, simulationFragment, "SIMULATION").hide(simulationFragment)
+                    .add(R.id.navHostFragment, drawingFragment, "DRAWING").hide(drawingFragment)
                     .commit();
+            activeFragment = homeFragment;
+        } else {
+            Fragment restoredHome = getSupportFragmentManager().findFragmentByTag("HOME");
+            if (restoredHome != null) homeFragment = restoredHome;
+
+            Fragment restoredPhysics = getSupportFragmentManager().findFragmentByTag("PHYSICS");
+            if (restoredPhysics != null) physicsFragment = restoredPhysics;
+
+            Fragment restoredSimulation = getSupportFragmentManager().findFragmentByTag("SIMULATION");
+            if (restoredSimulation != null) simulationFragment = restoredSimulation;
+
+            Fragment restoredDrawing = getSupportFragmentManager().findFragmentByTag("DRAWING");
+            if (restoredDrawing != null) drawingFragment = restoredDrawing;
+
+            if (homeFragment != null && !homeFragment.isHidden()) {
+                activeFragment = homeFragment;
+            } else if (physicsFragment != null && !physicsFragment.isHidden()) {
+                activeFragment = physicsFragment;
+            } else if (simulationFragment != null && !simulationFragment.isHidden()) {
+                activeFragment = simulationFragment;
+            } else if (drawingFragment != null && !drawingFragment.isHidden()) {
+                activeFragment = drawingFragment;
+            } else {
+                activeFragment = homeFragment;
+            }
         }
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
+            Fragment targetFragment = null;
             int itemId = item.getItemId();
             if (itemId == R.id.nav_home) {
-                selectedFragment = new HomeFragment();
+                targetFragment = homeFragment;
             } else if (itemId == R.id.nav_physics) {
-                selectedFragment = new PhysicsAnimationFragment();
+                targetFragment = physicsFragment;
             } else if (itemId == R.id.nav_simulation) {
-                selectedFragment = new SimulationFragment();
+                targetFragment = simulationFragment;
             } else if (itemId == R.id.nav_drawing) {
-                selectedFragment = new DrawingFragment();
+                targetFragment = drawingFragment;
             }
 
-            if (selectedFragment != null) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.navHostFragment, selectedFragment)
-                        .commit();
+            if (targetFragment != null) {
+                if (targetFragment != activeFragment) {
+                    getSupportFragmentManager().beginTransaction()
+                            .hide(activeFragment)
+                            .show(targetFragment)
+                            .commit();
+                    activeFragment = targetFragment;
+                }
                 return true;
             }
             return false;
