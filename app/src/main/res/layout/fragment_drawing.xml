@@ -268,19 +268,38 @@
                 android:progressTint="#4355C7"
                 android:thumbTint="#4355C7"/>
 
-            <!-- UNDO / CLEAR -->
+            <!-- ACTION BUTTONS: UNDO / REDO / CLEAR / SAVE -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
 
                 <Button
                     android:id="@+id/btnUndo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
                     android:minWidth="0dp"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
                     android:text="UNDO"
+                    android:textSize="11sp"
+                    android:textColor="#4355C7"
+                    android:backgroundTint="#E1E7FA"/>
+
+                <Button
+                    android:id="@+id/btnRedo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:minWidth="0dp"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="REDO"
+                    android:textSize="11sp"
                     android:textColor="#4355C7"
                     android:backgroundTint="#E1E7FA"/>
 
@@ -289,10 +308,27 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
                     android:minWidth="0dp"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
                     android:text="CLEAR"
+                    android:textSize="11sp"
                     android:textColor="#FFFFFF"
                     android:backgroundTint="#E46B63"/>
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minWidth="0dp"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="SAVE"
+                    android:textSize="11sp"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#0F9E91"/>
 
             </LinearLayout>
 

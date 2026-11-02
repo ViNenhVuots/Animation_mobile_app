@@ -18,8 +18,18 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
+
+import java.io.File;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class DrawingCanvasView extends View {
 
@@ -37,6 +47,7 @@ public class DrawingCanvasView extends View {
     }
 
     private final List<Stroke> strokes = new ArrayList<>();
+    private final Stack<Stroke> redoStrokes = new Stack<>();
 
     private Path currentPath;
     private Paint currentPaint;
@@ -253,8 +264,20 @@ public class DrawingCanvasView extends View {
 
     public void undo() {
         if (!strokes.isEmpty()) {
-            strokes.remove(strokes.size() - 1);
+            Stroke removed = strokes.remove(strokes.size() - 1);
+            redoStrokes.push(removed);
             redrawAllStrokes();
+        }
+    }
+
+    public void redo() {
+        if (!redoStrokes.isEmpty()) {
+            Stroke stroke = redoStrokes.pop();
+            strokes.add(stroke);
+            if (bitmapCanvas != null) {
+                bitmapCanvas.drawPath(stroke.path, stroke.paint);
+            }
+            invalidate();
         }
     }
 
@@ -262,6 +285,7 @@ public class DrawingCanvasView extends View {
         removeCallbacks(pendingTap);
 
         strokes.clear();
+        redoStrokes.clear();
         currentPath = null;
         currentPaint = null;
         isDrawing = false;
@@ -271,14 +295,104 @@ public class DrawingCanvasView extends View {
 
     private void finishStroke() {
         if (currentPath != null && currentPaint != null) {
-            strokes.add(
-                    new Stroke(currentPath, currentPaint)
-            );
+            Stroke stroke = new Stroke(currentPath, currentPaint);
+            strokes.add(stroke);
+            redoStrokes.clear();
+
+            if (bitmapCanvas != null) {
+                bitmapCanvas.drawPath(stroke.path, stroke.paint);
+            }
 
             currentPath = null;
             currentPaint = null;
 
-            redrawAllStrokes();
+            invalidate();
+        }
+    }
+
+    public boolean exportToGallery(Context context, String fileName) {
+        if (drawingBitmap == null || drawingBitmap.getWidth() <= 0 || drawingBitmap.getHeight() <= 0 || context == null) {
+            return false;
+        }
+
+        String name = (fileName != null && !fileName.trim().isEmpty())
+                ? fileName.trim()
+                : "ScienceLab_" + System.currentTimeMillis();
+        if (!name.toLowerCase().endsWith(".png")) {
+            name += ".png";
+        }
+
+        Bitmap exportBitmap = null;
+        OutputStream outputStream = null;
+        Uri imageUri = null;
+
+        try {
+            exportBitmap = Bitmap.createBitmap(
+                    drawingBitmap.getWidth(),
+                    drawingBitmap.getHeight(),
+                    Bitmap.Config.ARGB_8888
+            );
+            Canvas canvas = new Canvas(exportBitmap);
+            canvas.drawColor(Color.WHITE);
+            canvas.drawBitmap(drawingBitmap, 0, 0, null);
+
+            ContentResolver resolver = context.getContentResolver();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, name);
+            contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/ScienceLab");
+                contentValues.put(MediaStore.Images.Media.IS_PENDING, 1);
+            } else {
+                File directory = new File(
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                        "ScienceLab"
+                );
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+                File imageFile = new File(directory, name);
+                contentValues.put(MediaStore.Images.Media.DATA, imageFile.getAbsolutePath());
+            }
+
+            imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            if (imageUri == null) {
+                return false;
+            }
+
+            outputStream = resolver.openOutputStream(imageUri);
+            if (outputStream == null) {
+                return false;
+            }
+
+            boolean success = exportBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            outputStream.flush();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                contentValues.clear();
+                contentValues.put(MediaStore.Images.Media.IS_PENDING, 0);
+                resolver.update(imageUri, contentValues, null, null);
+            }
+
+            return success;
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (imageUri != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                try {
+                    context.getContentResolver().delete(imageUri, null, null);
+                } catch (Exception ignored) {}
+            }
+            return false;
+        } finally {
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (Exception ignored) {}
+            }
+            if (exportBitmap != null && !exportBitmap.isRecycled()) {
+                exportBitmap.recycle();
+            }
         }
     }
 

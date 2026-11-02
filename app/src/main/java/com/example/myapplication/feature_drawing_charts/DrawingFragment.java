@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -88,12 +89,18 @@ public class DrawingFragment extends Fragment {
         Button btnYellow =
                 view.findViewById(R.id.btnYellow);
 
-        // 4. Nut Undo va Clear va Pen/Eraser
+        // 4. Nut Undo, Redo, Clear, Save va Pen/Eraser
         Button btnUndo =
                 view.findViewById(R.id.btnUndo);
 
+        Button btnRedo =
+                view.findViewById(R.id.btnRedo);
+
         Button btnClear =
                 view.findViewById(R.id.btnClear);
+
+        Button btnSave =
+                view.findViewById(R.id.btnSave);
 
         Button btnPen =
                 view.findViewById(R.id.btnPen);
@@ -191,15 +198,31 @@ public class DrawingFragment extends Fragment {
         );
 
         // =====================================
-        // D. UNDO VA CLEAR VA PEN/ERASER
+        // D. UNDO, REDO, CLEAR, SAVE VA PEN/ERASER
         // =====================================
 
         btnUndo.setOnClickListener(v -> {
             drawingCanvas.undo();
         });
 
+        btnRedo.setOnClickListener(v -> {
+            drawingCanvas.redo();
+        });
+
         btnClear.setOnClickListener(v -> {
             drawingCanvas.clearCanvas();
+        });
+
+        btnSave.setOnClickListener(v -> {
+            if (getContext() != null) {
+                String fileName = "ScienceLab_Art_" + System.currentTimeMillis();
+                boolean success = drawingCanvas.exportToGallery(getContext(), fileName);
+                if (success) {
+                    Toast.makeText(getContext(), "Đã lưu tranh vào Thư viện ảnh!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Lưu tranh thất bại. Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
 
         btnPen.setOnClickListener(v -> {
