@@ -1,4 +1,3 @@
-
 package com.example.myapplication.feature_simulation;
 
 import android.os.Bundle;
@@ -42,26 +41,18 @@ public class SimulationFragment extends Fragment {
 
         // Che do lua
         btnFire.setOnClickListener(v -> {
-            particleView.setMode(
-                    ParticleFireWaterView.MODE_FIRE
-            );
-
-            txtMode.setText("Current Mode: FIRE");
+            particleView.setMode(ParticleFireWaterView.MODE_FIRE);
+            txtMode.setText(getString(R.string.lbl_current_mode_fire));
         });
 
         // Che do nuoc
         btnWater.setOnClickListener(v -> {
-            particleView.setMode(
-                    ParticleFireWaterView.MODE_WATER
-            );
-
-            txtMode.setText("Current Mode: WATER");
+            particleView.setMode(ParticleFireWaterView.MODE_WATER);
+            txtMode.setText(getString(R.string.lbl_current_mode_water));
         });
 
         // Xoa tat ca hat hien tai
-        btnClear.setOnClickListener(v -> {
-            particleView.clearParticles();
-        });
+        btnClear.setOnClickListener(v -> particleView.clearParticles());
 
         return view;
     }

@@ -1,4 +1,3 @@
-
 package com.example.myapplication.feature_drawing_charts;
 
 import android.view.ViewConfiguration;
@@ -25,29 +24,27 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import com.example.myapplication.R;
 import java.io.File;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 public class DrawingCanvasView extends View {
 
     public static final int MODE_PEN = 0;
     public static final int MODE_ERASER = 1;
 
-    private static class Stroke {
-        Path path;
-        Paint paint;
+    public static class Stroke {
+        public final Path path;
+        public final Paint paint;
 
-        Stroke(Path path, Paint paint) {
+        public Stroke(Path path, Paint paint) {
             this.path = path;
             this.paint = paint;
         }
     }
 
-    private final List<Stroke> strokes = new ArrayList<>();
-    private final Stack<Stroke> redoStrokes = new Stack<>();
+    private final StrokeHistoryManager<Stroke> historyManager = new StrokeHistoryManager<>();
 
     private Path currentPath;
     private Paint currentPaint;
@@ -122,7 +119,7 @@ public class DrawingCanvasView extends View {
 
                         Toast.makeText(
                                 getContext(),
-                                "Double Tap: Undo",
+                                getContext().getString(R.string.msg_double_tap_undo),
                                 Toast.LENGTH_SHORT
                         ).show();
 
@@ -145,7 +142,7 @@ public class DrawingCanvasView extends View {
 
                             Toast.makeText(
                                     getContext(),
-                                    "PEN MODE",
+                                    getContext().getString(R.string.msg_pen_mode),
                                     Toast.LENGTH_SHORT
                             ).show();
 
@@ -154,7 +151,7 @@ public class DrawingCanvasView extends View {
 
                             Toast.makeText(
                                     getContext(),
-                                    "ERASER MODE",
+                                    getContext().getString(R.string.msg_eraser_mode),
                                     Toast.LENGTH_SHORT
                             ).show();
                         }
@@ -224,6 +221,18 @@ public class DrawingCanvasView extends View {
         return eraserSize;
     }
 
+    public StrokeHistoryManager<Stroke> getHistoryManager() {
+        return historyManager;
+    }
+
+    public int getStrokeCount() {
+        return historyManager.getStrokeCount();
+    }
+
+    public int getRedoCount() {
+        return historyManager.getRedoCount();
+    }
+
     @Override
     protected void onSizeChanged(
             int w, int h, int oldw, int oldh) {
@@ -252,6 +261,7 @@ public class DrawingCanvasView extends View {
                 PorterDuff.Mode.CLEAR
         );
 
+        List<Stroke> strokes = historyManager.getStrokes();
         for (Stroke stroke : strokes) {
             bitmapCanvas.drawPath(
                     stroke.path,
@@ -263,19 +273,17 @@ public class DrawingCanvasView extends View {
     }
 
     public void undo() {
-        if (!strokes.isEmpty()) {
-            Stroke removed = strokes.remove(strokes.size() - 1);
-            redoStrokes.push(removed);
+        Stroke removed = historyManager.undo();
+        if (removed != null) {
             redrawAllStrokes();
         }
     }
 
     public void redo() {
-        if (!redoStrokes.isEmpty()) {
-            Stroke stroke = redoStrokes.pop();
-            strokes.add(stroke);
+        Stroke restored = historyManager.redo();
+        if (restored != null) {
             if (bitmapCanvas != null) {
-                bitmapCanvas.drawPath(stroke.path, stroke.paint);
+                bitmapCanvas.drawPath(restored.path, restored.paint);
             }
             invalidate();
         }
@@ -284,8 +292,7 @@ public class DrawingCanvasView extends View {
     public void clearCanvas() {
         removeCallbacks(pendingTap);
 
-        strokes.clear();
-        redoStrokes.clear();
+        historyManager.clear();
         currentPath = null;
         currentPaint = null;
         isDrawing = false;
@@ -296,9 +303,9 @@ public class DrawingCanvasView extends View {
     private void finishStroke() {
         if (currentPath != null && currentPaint != null) {
             Stroke stroke = new Stroke(currentPath, currentPaint);
-            strokes.add(stroke);
-            redoStrokes.clear();
+            historyManager.addStroke(stroke);
 
+            // O(1) direct drawing onto the existing bitmap backing canvas
             if (bitmapCanvas != null) {
                 bitmapCanvas.drawPath(stroke.path, stroke.paint);
             }

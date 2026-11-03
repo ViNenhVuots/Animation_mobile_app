@@ -1,4 +1,4 @@
-
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SCIENCE LAB"
+        android:text="@string/title_science_lab"
         android:textColor="#4355C7"
         android:textSize="12sp"
         android:textStyle="bold"
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Particle Simulation"
+        android:text="@string/subtitle_simulation"
         android:textColor="#19243C"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="16dp"
-        android:text="Fire &amp; Water  •  Interactive Particles"
+        android:text="@string/tag_simulation_features"
         android:textColor="#64748B"
         android:textSize="13sp"
         android:gravity="center"/>
@@ -54,7 +54,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Particle Playground"
+            android:text="@string/simulation_playground_title"
             android:textColor="#19243C"
             android:textSize="18sp"
             android:textStyle="bold"/>
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="12dp"
-            android:text="Chạm và kéo để tạo hiệu ứng hạt"
+            android:text="@string/simulation_playground_desc"
             android:textColor="#64748B"
             android:textSize="12sp"/>
 
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:layout_marginBottom="12dp"
-            android:text="Current Mode: FIRE"
+            android:text="@string/lbl_current_mode_fire"
             android:textColor="#E46B63"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -108,7 +108,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="FIRE"
+                android:text="@string/btn_fire_mode"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#E46B63"
                 android:textSize="12sp"/>
@@ -118,7 +118,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="WATER"
+                android:text="@string/btn_water_mode"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#4355C7"
                 android:textSize="12sp"/>
@@ -128,7 +128,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="CLEAR"
+                android:text="@string/btn_clear"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#64748B"
                 android:textSize="12sp"/>

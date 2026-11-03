@@ -126,17 +126,9 @@ public class DrawingFragment extends Fragment {
         // A. CHUYEN CHE DO DRAWING / CHART / CLOCK
         // =====================================
 
-        btnDrawingMode.setOnClickListener(v -> {
-            showMode(0);
-        });
-
-        btnChartMode.setOnClickListener(v -> {
-            showMode(1);
-        });
-
-        btnClockMode.setOnClickListener(v -> {
-            showMode(2);
-        });
+        btnDrawingMode.setOnClickListener(v -> showMode(0));
+        btnChartMode.setOnClickListener(v -> showMode(1));
+        btnClockMode.setOnClickListener(v -> showMode(2));
 
         // =====================================
         // B. CHON MAU BUT
@@ -175,12 +167,12 @@ public class DrawingFragment extends Fragment {
                         if (drawingCanvas.isEraserMode()) {
                             drawingCanvas.setEraserSize(size);
                             txtBrushSize.setText(
-                                    "Eraser Size: " + size
+                                    getString(R.string.lbl_eraser_size_format, size)
                             );
                         } else {
                             drawingCanvas.setBrushSize(size);
                             txtBrushSize.setText(
-                                    "Brush Size: " + size
+                                    getString(R.string.lbl_brush_size_format, size)
                             );
                         }
                     }
@@ -201,64 +193,43 @@ public class DrawingFragment extends Fragment {
         // D. UNDO, REDO, CLEAR, SAVE VA PEN/ERASER
         // =====================================
 
-        btnUndo.setOnClickListener(v -> {
-            drawingCanvas.undo();
-        });
-
-        btnRedo.setOnClickListener(v -> {
-            drawingCanvas.redo();
-        });
-
-        btnClear.setOnClickListener(v -> {
-            drawingCanvas.clearCanvas();
-        });
+        btnUndo.setOnClickListener(v -> drawingCanvas.undo());
+        btnRedo.setOnClickListener(v -> drawingCanvas.redo());
+        btnClear.setOnClickListener(v -> drawingCanvas.clearCanvas());
 
         btnSave.setOnClickListener(v -> {
             if (getContext() != null) {
                 String fileName = "ScienceLab_Art_" + System.currentTimeMillis();
                 boolean success = drawingCanvas.exportToGallery(getContext(), fileName);
                 if (success) {
-                    Toast.makeText(getContext(), "Đã lưu tranh vào Thư viện ảnh!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.msg_save_success), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Lưu tranh thất bại. Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.msg_save_failed), Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         btnPen.setOnClickListener(v -> {
             drawingCanvas.setPenMode();
-            seekBrushSize.setProgress((int) drawingCanvas.getBrushSize());
-            txtBrushSize.setText(
-                    "Brush Size: " + (int) drawingCanvas.getBrushSize()
-            );
+            int size = (int) drawingCanvas.getBrushSize();
+            seekBrushSize.setProgress(size);
+            txtBrushSize.setText(getString(R.string.lbl_brush_size_format, size));
         });
 
         btnEraser.setOnClickListener(v -> {
             drawingCanvas.setEraserMode();
-            seekBrushSize.setProgress((int) drawingCanvas.getEraserSize());
-            txtBrushSize.setText(
-                    "Eraser Size: " + (int) drawingCanvas.getEraserSize()
-            );
+            int size = (int) drawingCanvas.getEraserSize();
+            seekBrushSize.setProgress(size);
+            txtBrushSize.setText(getString(R.string.lbl_eraser_size_format, size));
         });
 
         // =====================================
         // E. DIEU KHIEN DYNAMIC CHART
         // =====================================
 
-        // START: bat dau cap nhat du lieu
-        btnStartChart.setOnClickListener(v -> {
-            dynamicChart.startAnimation();
-        });
-
-        // PAUSE: tam dung bieu do
-        btnPauseChart.setOnClickListener(v -> {
-            dynamicChart.pauseAnimation();
-        });
-
-        // RESET: khoi phuc du lieu ban dau
-        btnResetChart.setOnClickListener(v -> {
-            dynamicChart.resetChart();
-        });
+        btnStartChart.setOnClickListener(v -> dynamicChart.startAnimation());
+        btnPauseChart.setOnClickListener(v -> dynamicChart.pauseAnimation());
+        btnResetChart.setOnClickListener(v -> dynamicChart.resetChart());
 
         // Mac dinh hien thi DRAWING (mode 0)
         showMode(0);
@@ -320,7 +291,6 @@ public class DrawingFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        // Dung animation khi roi khoi man hinh
         if (dynamicChart != null) {
             dynamicChart.pauseAnimation();
         }

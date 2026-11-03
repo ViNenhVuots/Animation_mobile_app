@@ -1,4 +1,4 @@
-
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="SCIENCE LAB"
+        android:text="@string/title_science_lab"
         android:textColor="#4355C7"
         android:textSize="12sp"
         android:textStyle="bold"/>
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:gravity="center"
-        android:text="Drawing &amp; Charts"
+        android:text="@string/subtitle_drawing_charts"
         android:textColor="#19243C"
         android:textSize="23sp"
         android:textStyle="bold"/>
@@ -36,7 +36,7 @@
         android:layout_marginTop="3dp"
         android:layout_marginBottom="12dp"
         android:gravity="center"
-        android:text="Canvas  •  Animation  •  Clock"
+        android:text="@string/tag_drawing_features"
         android:textColor="#64748B"
         android:textSize="12sp"/>
 
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:minWidth="0dp"
-                android:text="DRAWING"
+                android:text="@string/btn_drawing"
                 android:textSize="10sp"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#4355C7"/>
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:minWidth="0dp"
-                android:text="CHART"
+                android:text="@string/btn_chart"
                 android:textSize="10sp"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#64748B"/>
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:minWidth="0dp"
-                android:text="CLOCK"
+                android:text="@string/btn_clock"
                 android:textSize="10sp"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#64748B"/>
@@ -143,7 +143,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:minWidth="0dp"
-                    android:text="PEN"
+                    android:text="@string/btn_pen"
                     android:textColor="#FFFFFF"
                     android:backgroundTint="#4355C7"/>
 
@@ -153,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:minWidth="0dp"
-                    android:text="ERASER"
+                    android:text="@string/btn_eraser"
                     android:textColor="#4355C7"
                     android:backgroundTint="#E1E7FA"/>
 
@@ -165,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="4dp"
-                android:text="Brush Color"
+                android:text="@string/lbl_brush_color"
                 android:textColor="#19243C"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -188,7 +188,7 @@
                     android:textSize="24sp"
                     android:textColor="#111827"
                     android:backgroundTint="#EDF0FA"
-                    android:contentDescription="Black brush"/>
+                    android:contentDescription="@string/desc_black_brush"/>
 
                 <Button
                     android:id="@+id/btnRed"
@@ -202,7 +202,7 @@
                     android:textSize="24sp"
                     android:textColor="#EF4444"
                     android:backgroundTint="#EDF0FA"
-                    android:contentDescription="Red brush"/>
+                    android:contentDescription="@string/desc_red_brush"/>
 
                 <Button
                     android:id="@+id/btnBlue"
@@ -216,7 +216,7 @@
                     android:textSize="24sp"
                     android:textColor="#3B82F6"
                     android:backgroundTint="#EDF0FA"
-                    android:contentDescription="Blue brush"/>
+                    android:contentDescription="@string/desc_blue_brush"/>
 
                 <Button
                     android:id="@+id/btnGreen"
@@ -230,7 +230,7 @@
                     android:textSize="24sp"
                     android:textColor="#22C55E"
                     android:backgroundTint="#EDF0FA"
-                    android:contentDescription="Green brush"/>
+                    android:contentDescription="@string/desc_green_brush"/>
 
                 <Button
                     android:id="@+id/btnYellow"
@@ -244,7 +244,7 @@
                     android:textSize="24sp"
                     android:textColor="#EAB308"
                     android:backgroundTint="#EDF0FA"
-                    android:contentDescription="Yellow brush"/>
+                    android:contentDescription="@string/desc_yellow_brush"/>
 
             </LinearLayout>
 
@@ -254,7 +254,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Brush Size: 12"
+                android:text="@string/lbl_brush_size_default"
                 android:textColor="#334155"
                 android:textSize="13sp"
                 android:textStyle="bold"/>
@@ -284,7 +284,7 @@
                     android:minWidth="0dp"
                     android:paddingLeft="0dp"
                     android:paddingRight="0dp"
-                    android:text="UNDO"
+                    android:text="@string/btn_undo"
                     android:textSize="11sp"
                     android:textColor="#4355C7"
                     android:backgroundTint="#E1E7FA"/>
@@ -298,7 +298,7 @@
                     android:minWidth="0dp"
                     android:paddingLeft="0dp"
                     android:paddingRight="0dp"
-                    android:text="REDO"
+                    android:text="@string/btn_redo"
                     android:textSize="11sp"
                     android:textColor="#4355C7"
                     android:backgroundTint="#E1E7FA"/>
@@ -312,7 +312,7 @@
                     android:minWidth="0dp"
                     android:paddingLeft="0dp"
                     android:paddingRight="0dp"
-                    android:text="CLEAR"
+                    android:text="@string/btn_clear"
                     android:textSize="11sp"
                     android:textColor="#FFFFFF"
                     android:backgroundTint="#E46B63"/>
@@ -325,7 +325,7 @@
                     android:minWidth="0dp"
                     android:paddingLeft="0dp"
                     android:paddingRight="0dp"
-                    android:text="SAVE"
+                    android:text="@string/btn_save"
                     android:textSize="11sp"
                     android:textColor="#FFFFFF"
                     android:backgroundTint="#0F9E91"/>
@@ -348,7 +348,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:minWidth="0dp"
-                android:text="START"
+                android:text="@string/btn_start"
                 android:textSize="11sp"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#4355C7"/>
@@ -359,7 +359,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:minWidth="0dp"
-                android:text="PAUSE"
+                android:text="@string/btn_pause"
                 android:textSize="11sp"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#64748B"/>
@@ -370,7 +370,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:minWidth="0dp"
-                android:text="RESET"
+                android:text="@string/btn_reset"
                 android:textSize="11sp"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#0F9E91"/>

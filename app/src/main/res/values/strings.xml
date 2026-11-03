@@ -1,7 +1,98 @@
 <resources>
-    <string name="app_name">Animation &amp; Canvas Demo</string>
+    <!-- Application & Navigation -->
+    <string name="app_name">Science Lab - Canvas &amp; Animation</string>
     <string name="menu_home">Home</string>
     <string name="menu_physics">Physics &amp; Anim</string>
     <string name="menu_simulation">Simulation</string>
     <string name="menu_drawing">Drawing &amp; Charts</string>
+
+    <!-- Global Headers & Brand -->
+    <string name="title_science_lab">SCIENCE LAB</string>
+    <string name="subtitle_drawing_charts">Drawing &amp; Charts</string>
+    <string name="subtitle_physics">Physics Animation</string>
+    <string name="subtitle_simulation">Particle Simulation</string>
+    <string name="tag_drawing_features">Canvas  •  Animation  •  Clock</string>
+    <string name="tag_physics_features">Gravity  •  Spring  •  Collision</string>
+    <string name="tag_simulation_features">Fire &amp; Water  •  Interactive Particles</string>
+    <string name="android_badge">ANDROID</string>
+    <string name="project_footer">ANDROID CANVAS &amp; ANIMATION PROJECT</string>
+
+    <!-- Home Screen -->
+    <string name="welcome_header">WELCOME TO SCIENCE LAB</string>
+    <string name="welcome_title">Explore, Create &amp; Animate</string>
+    <string name="welcome_desc">Khám phá mô phỏng vật lý, hiệu ứng hạt và đồ họa tương tác.</string>
+    <string name="interactive_modules_badge">●  3 INTERACTIVE MODULES</string>
+    <string name="explore_modules_title">Explore Modules</string>
+    <string name="choose_one">Choose one</string>
+    <string name="module_01_label">MODULE 01</string>
+    <string name="module_01_title">Physics Animation</string>
+    <string name="module_01_desc">Gravity, Spring, Collision &amp; Property</string>
+    <string name="module_02_label">MODULE 02</string>
+    <string name="module_02_title">Particle Simulation</string>
+    <string name="module_02_desc">Fire &amp; Water Particle Effects</string>
+    <string name="module_03_label">MODULE 03</string>
+    <string name="module_03_title">Drawing &amp; Charts</string>
+    <string name="module_03_desc">Drawing, Dynamic Chart &amp; Clock</string>
+
+    <!-- Physics Screen -->
+    <string name="physics_playground_title">Physics Playground</string>
+    <string name="physics_playground_desc">Chạm, kéo và thả bóng để thử nghiệm</string>
+    <string name="lbl_gravity_default">Gravity: 1200</string>
+    <string name="lbl_gravity_format">Gravity: %1$d</string>
+    <string name="lbl_spring_default">Spring Strength: 50</string>
+    <string name="lbl_spring_format">Spring Strength: %1$d</string>
+    <string name="lbl_bounce_default">Bounce: 70%</string>
+    <string name="lbl_bounce_format">Bounce: %1$d%%</string>
+    <string name="btn_reset_ball">RESET BALL</string>
+    <string name="property_animation_title">Property Animation</string>
+    <string name="property_animation_desc">ObjectAnimator + AnimatorSet</string>
+    <string name="btn_start">START</string>
+    <string name="btn_stop">STOP</string>
+    <string name="btn_pause">PAUSE</string>
+    <string name="btn_reset">RESET</string>
+
+    <!-- Simulation Screen -->
+    <string name="simulation_playground_title">Particle Playground</string>
+    <string name="simulation_playground_desc">Chạm và kéo để tạo hiệu ứng hạt</string>
+    <string name="lbl_current_mode_fire">Current Mode: FIRE</string>
+    <string name="lbl_current_mode_water">Current Mode: WATER</string>
+    <string name="btn_fire_mode">FIRE</string>
+    <string name="btn_water_mode">WATER</string>
+    <string name="btn_clear">CLEAR</string>
+
+    <!-- Drawing & Charts Screen -->
+    <string name="btn_drawing">DRAWING</string>
+    <string name="btn_chart">CHART</string>
+    <string name="btn_clock">CLOCK</string>
+    <string name="btn_pen">PEN</string>
+    <string name="btn_eraser">ERASER</string>
+    <string name="lbl_brush_color">Brush Color</string>
+    <string name="lbl_brush_size_default">Brush Size: 12</string>
+    <string name="lbl_brush_size_format">Brush Size: %1$d</string>
+    <string name="lbl_eraser_size_format">Eraser Size: %1$d</string>
+    <string name="btn_undo">UNDO</string>
+    <string name="btn_redo">REDO</string>
+    <string name="btn_save">SAVE</string>
+    <string name="chart_title">Live Data Chart</string>
+    <string name="chart_status_live">LIVE - Updating</string>
+    <string name="chart_status_paused">PAUSED</string>
+    <string name="clock_title">Analog Clock</string>
+    <string name="clock_subtitle">Local Device Time</string>
+
+    <!-- Accessibility Descriptions -->
+    <string name="desc_black_brush">Black brush</string>
+    <string name="desc_red_brush">Red brush</string>
+    <string name="desc_blue_brush">Blue brush</string>
+    <string name="desc_green_brush">Green brush</string>
+    <string name="desc_yellow_brush">Yellow brush</string>
+    <string name="desc_open_physics">Open Physics Animation</string>
+    <string name="desc_open_simulation">Open Particle Simulation</string>
+    <string name="desc_open_drawing">Open Drawing and Charts</string>
+
+    <!-- Toast & System Messages -->
+    <string name="msg_save_success">Đã lưu tranh vào Thư viện ảnh!</string>
+    <string name="msg_save_failed">Không thể lưu ảnh, vui lòng thử lại.</string>
+    <string name="msg_double_tap_undo">Double Tap: Undo</string>
+    <string name="msg_pen_mode">PEN MODE</string>
+    <string name="msg_eraser_mode">ERASER MODE</string>
 </resources>

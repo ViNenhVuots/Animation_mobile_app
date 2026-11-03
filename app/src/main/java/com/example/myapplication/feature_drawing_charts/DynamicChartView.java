@@ -1,4 +1,3 @@
-
 package com.example.myapplication.feature_drawing_charts;
 
 import android.animation.Animator;
@@ -34,6 +33,10 @@ public class DynamicChartView extends View {
     private final float[] targetValues = new float[8];
 
     private final Random random = new Random();
+
+    // Reusable Path instances to avoid allocations during onDraw (Zero Allocation)
+    private final Path areaPath = new Path();
+    private final Path linePath = new Path();
 
     private final Paint titlePaint =
             new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -301,12 +304,11 @@ public class DynamicChartView extends View {
             );
         }
 
-        // AREA FILL
-        Path areaPath = new Path();
+        // AREA FILL & LINE PATH - Resetting instead of new allocations
+        areaPath.reset();
         areaPath.moveTo(left, bottom);
 
-        // LINE PATH
-        Path linePath = new Path();
+        linePath.reset();
 
         for (int i = 0; i < values.length; i++) {
             float x = left + i * stepX;

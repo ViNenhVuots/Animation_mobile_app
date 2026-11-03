@@ -1,4 +1,4 @@
-
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="SCIENCE LAB"
+            android:text="@string/title_science_lab"
             android:textColor="#4355C7"
             android:textSize="12sp"
             android:textStyle="bold"/>
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="Physics Animation"
+            android:text="@string/subtitle_physics"
             android:textColor="#19243C"
             android:textSize="24sp"
             android:textStyle="bold"/>
@@ -42,7 +42,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:text="Gravity  •  Spring  •  Collision"
+            android:text="@string/tag_physics_features"
             android:textColor="#64748B"
             android:textSize="13sp"/>
 
@@ -58,7 +58,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Physics Playground"
+                android:text="@string/physics_playground_title"
                 android:textColor="#19243C"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="12dp"
-                android:text="Chạm, kéo và thả bóng để thử nghiệm"
+                android:text="@string/physics_playground_desc"
                 android:textColor="#64748B"
                 android:textSize="12sp"/>
 
@@ -94,7 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Gravity: 1200"
+                android:text="@string/lbl_gravity_default"
                 android:textColor="#334155"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -114,7 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="Spring Strength: 50"
+                android:text="@string/lbl_spring_default"
                 android:textColor="#334155"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -134,7 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="Bounce: 70%"
+                android:text="@string/lbl_bounce_default"
                 android:textColor="#334155"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -154,7 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="RESET BALL"
+                android:text="@string/btn_reset_ball"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#4355C7"/>
 
@@ -175,7 +175,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Property Animation"
+                android:text="@string/property_animation_title"
                 android:textColor="#19243C"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
@@ -185,7 +185,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="12dp"
-                android:text="ObjectAnimator + AnimatorSet"
+                android:text="@string/property_animation_desc"
                 android:textColor="#64748B"
                 android:textSize="12sp"/>
 
@@ -221,7 +221,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="START"
+                    android:text="@string/btn_start"
                     android:textSize="11sp"
                     android:textColor="#FFFFFF"
                     android:backgroundTint="#4355C7"/>
@@ -231,7 +231,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="STOP"
+                    android:text="@string/btn_stop"
                     android:textSize="11sp"
                     android:textColor="#FFFFFF"
                     android:backgroundTint="#64748B"/>
@@ -241,7 +241,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="RESET"
+                    android:text="@string/btn_reset"
                     android:textSize="11sp"
                     android:textColor="#FFFFFF"
                     android:backgroundTint="#0F9E91"/>

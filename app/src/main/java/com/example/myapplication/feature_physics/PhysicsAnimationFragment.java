@@ -1,4 +1,3 @@
-
 package com.example.myapplication.feature_physics;
 
 import android.os.Bundle;
@@ -93,9 +92,7 @@ public class PhysicsAnimationFragment extends Fragment {
         seekGravity.setOnSeekBarChangeListener(
                 createListener(progress -> {
                     physicsView.setGravity(progress);
-                    txtGravity.setText(
-                            "Gravity: " + progress
-                    );
+                    txtGravity.setText(getString(R.string.lbl_gravity_format, progress));
                 })
         );
 
@@ -103,10 +100,7 @@ public class PhysicsAnimationFragment extends Fragment {
         seekSpring.setOnSeekBarChangeListener(
                 createListener(progress -> {
                     physicsView.setSpringStrength(progress);
-
-                    txtSpring.setText(
-                            "Spring Strength: " + progress
-                    );
+                    txtSpring.setText(getString(R.string.lbl_spring_format, progress));
                 })
         );
 
@@ -114,38 +108,26 @@ public class PhysicsAnimationFragment extends Fragment {
         seekBounce.setOnSeekBarChangeListener(
                 createListener(progress -> {
                     float bounce = progress / 100f;
-
                     physicsView.setBounce(bounce);
-
-                    txtBounce.setText(
-                            "Bounce: " + progress + "%"
-                    );
+                    txtBounce.setText(getString(R.string.lbl_bounce_format, progress));
                 })
         );
 
         // Reset bong Physics
-        btnReset.setOnClickListener(v -> {
-            physicsView.resetBall();
-        });
+        btnReset.setOnClickListener(v -> physicsView.resetBall());
 
         // ==============================
         // PROPERTY ANIMATION CONTROLS
         // ==============================
 
         // START: Di chuyen, xoay va phong to
-        btnStartProperty.setOnClickListener(v -> {
-            animationHelper.startAnimation(animationTarget);
-        });
+        btnStartProperty.setOnClickListener(v -> animationHelper.startAnimation(animationTarget));
 
         // STOP: Dung hieu ung
-        btnStopProperty.setOnClickListener(v -> {
-            animationHelper.stopAnimation();
-        });
+        btnStopProperty.setOnClickListener(v -> animationHelper.stopAnimation());
 
         // RESET: Khoi phuc vi tri va kich thuoc
-        btnResetProperty.setOnClickListener(v -> {
-            animationHelper.resetAnimation(animationTarget);
-        });
+        btnResetProperty.setOnClickListener(v -> animationHelper.resetAnimation(animationTarget));
 
         return view;
     }

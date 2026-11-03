@@ -1,4 +1,3 @@
-
 package com.example.myapplication.feature_simulation;
 
 import android.content.Context;
@@ -22,6 +21,21 @@ public class ParticleFireWaterView extends View {
     public static final int MODE_WATER = 1;
 
     private static final int MAX_PARTICLES = 180;
+    private static final int MAX_POOL_CAPACITY = 400;
+
+    // Const arrays to eliminate per-particle allocation
+    private static final int[] FIRE_COLORS = {
+            Color.RED,
+            Color.rgb(255, 87, 34),
+            Color.rgb(255, 152, 0),
+            Color.YELLOW
+    };
+
+    private static final int[] WATER_COLORS = {
+            Color.CYAN,
+            Color.rgb(3, 169, 244),
+            Color.rgb(33, 150, 243)
+    };
 
     private static class Particle {
         float x, y;
@@ -31,9 +45,22 @@ public class ParticleFireWaterView extends View {
         float life;
         float maxLife;
         int color;
+
+        void reset() {
+            x = 0f;
+            y = 0f;
+            vx = 0f;
+            vy = 0f;
+            alpha = 1f;
+            size = 0f;
+            life = 0f;
+            maxLife = 0f;
+            color = 0;
+        }
     }
 
     private final List<Particle> particles = new ArrayList<>();
+    private final List<Particle> particlePool = new ArrayList<>(MAX_POOL_CAPACITY);
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Random random = new Random();
 
@@ -58,7 +85,24 @@ public class ParticleFireWaterView extends View {
     }
 
     private void init() {
-        // Enable hardware acceleration for smooth particle animation
+        // Pre-warm the pool to guarantee Zero Allocation during the rendering loop
+        for (int i = 0; i < 120; i++) {
+            particlePool.add(new Particle());
+        }
+    }
+
+    private Particle obtainParticle() {
+        if (!particlePool.isEmpty()) {
+            return particlePool.remove(particlePool.size() - 1);
+        }
+        return new Particle();
+    }
+
+    private void releaseParticle(Particle p) {
+        if (p != null && particlePool.size() < MAX_POOL_CAPACITY) {
+            p.reset();
+            particlePool.add(p);
+        }
     }
 
     @Override
@@ -76,7 +120,7 @@ public class ParticleFireWaterView extends View {
         }
 
         mode = newMode;
-        particles.clear();
+        recycleAllParticles();
         spawnAccumulator = 0f;
         invalidate();
     }
@@ -86,9 +130,16 @@ public class ParticleFireWaterView extends View {
     }
 
     public void clearParticles() {
-        particles.clear();
+        recycleAllParticles();
         spawnAccumulator = 0f;
         invalidate();
+    }
+
+    private void recycleAllParticles() {
+        for (int i = 0; i < particles.size(); i++) {
+            releaseParticle(particles.get(i));
+        }
+        particles.clear();
     }
 
     private void createParticle(float x, float y) {
@@ -96,7 +147,7 @@ public class ParticleFireWaterView extends View {
             return;
         }
 
-        Particle p = new Particle();
+        Particle p = obtainParticle();
 
         p.x = x;
         p.y = y;
@@ -108,34 +159,14 @@ public class ParticleFireWaterView extends View {
 
             p.size = 5f + random.nextFloat() * 13f;
             p.maxLife = 0.7f + random.nextFloat() * 0.9f;
-
-            int[] fireColors = {
-                    Color.RED,
-                    Color.rgb(255, 87, 34),
-                    Color.rgb(255, 152, 0),
-                    Color.YELLOW
-            };
-
-            p.color = fireColors[
-                    random.nextInt(fireColors.length)
-                    ];
-
+            p.color = FIRE_COLORS[random.nextInt(FIRE_COLORS.length)];
         } else {
             p.vx = (random.nextFloat() - 0.5f) * 100f;
             p.vy = 40f + random.nextFloat() * 100f;
 
             p.size = 4f + random.nextFloat() * 8f;
             p.maxLife = 1.5f + random.nextFloat() * 1.5f;
-
-            int[] waterColors = {
-                    Color.CYAN,
-                    Color.rgb(3, 169, 244),
-                    Color.rgb(33, 150, 243)
-            };
-
-            p.color = waterColors[
-                    random.nextInt(waterColors.length)
-                    ];
+            p.color = WATER_COLORS[random.nextInt(WATER_COLORS.length)];
         }
 
         p.life = p.maxLife;
@@ -171,6 +202,7 @@ public class ParticleFireWaterView extends View {
                     || p.x < -30f
                     || p.x > getWidth() + 30f) {
 
+                releaseParticle(p);
                 particles.remove(i);
             }
         }
@@ -277,6 +309,7 @@ public class ParticleFireWaterView extends View {
     @Override
     protected void onDetachedFromWindow() {
         lastFrameTime = 0L;
+        recycleAllParticles();
         super.onDetachedFromWindow();
     }
 

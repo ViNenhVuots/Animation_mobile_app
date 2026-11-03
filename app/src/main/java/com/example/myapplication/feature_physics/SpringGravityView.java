@@ -1,4 +1,3 @@
-
 package com.example.myapplication.feature_physics;
 
 import android.content.Context;
@@ -89,41 +88,40 @@ public class SpringGravityView extends View {
             float dx = ballX - anchorX;
             float dy = ballY - anchorY;
 
-            accelerationX -= springStrength * dx;
-            accelerationY -= springStrength * dy;
-
-            accelerationX -= springDamping * velocityX;
-            accelerationY -= springDamping * velocityY;
+            accelerationX += PhysicsEngine.calculateHookeSpringAcceleration(
+                    dx, velocityX, springStrength, springDamping);
+            accelerationY += PhysicsEngine.calculateHookeSpringAcceleration(
+                    dy, velocityY, springStrength, springDamping);
         }
 
-        velocityX += accelerationX * dt;
-        velocityY += accelerationY * dt;
+        velocityX = PhysicsEngine.integrateVelocity(velocityX, accelerationX, dt);
+        velocityY = PhysicsEngine.integrateVelocity(velocityY, accelerationY, dt);
 
-        ballX += velocityX * dt;
-        ballY += velocityY * dt;
+        ballX = PhysicsEngine.integratePosition(ballX, velocityX, dt);
+        ballY = PhysicsEngine.integratePosition(ballY, velocityY, dt);
 
         // Va cham canh trai
         if (ballX < radius) {
             ballX = radius;
-            velocityX = Math.abs(velocityX) * bounce;
+            velocityX = PhysicsEngine.resolvePositiveBoundaryBounce(velocityX, bounce);
         }
 
         // Va cham canh phai
         if (ballX > getWidth() - radius) {
             ballX = getWidth() - radius;
-            velocityX = -Math.abs(velocityX) * bounce;
+            velocityX = PhysicsEngine.resolveBoundaryBounce(velocityX, bounce);
         }
 
         // Va cham canh tren
         if (ballY < radius) {
             ballY = radius;
-            velocityY = Math.abs(velocityY) * bounce;
+            velocityY = PhysicsEngine.resolvePositiveBoundaryBounce(velocityY, bounce);
         }
 
         // Va cham canh duoi
         if (ballY > getHeight() - radius) {
             ballY = getHeight() - radius;
-            velocityY = -Math.abs(velocityY) * bounce;
+            velocityY = PhysicsEngine.resolveBoundaryBounce(velocityY, bounce);
         }
     }
 
@@ -137,7 +135,7 @@ public class SpringGravityView extends View {
             float dt = (currentTime - lastFrameTime) / 1000f;
 
             // Gioi han dt de tranh buoc nhay qua lon
-            dt = Math.min(dt, 0.032f);
+            dt = PhysicsEngine.clampDeltaTime(dt, PhysicsEngine.MAX_DELTA_TIME);
 
             updatePhysics(dt);
         }
@@ -296,5 +294,4 @@ public class SpringGravityView extends View {
 
         invalidate();
     }
-
 }

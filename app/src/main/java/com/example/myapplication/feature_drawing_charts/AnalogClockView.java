@@ -1,4 +1,3 @@
-
 package com.example.myapplication.feature_drawing_charts;
 
 import android.content.Context;
@@ -49,6 +48,11 @@ public class AnalogClockView extends View {
     private final Paint digitalPaint =
             new Paint(Paint.ANTI_ALIAS_FLAG);
 
+    // Reusable objects to eliminate per-second allocations in onDraw (Zero Allocation)
+    private Calendar calendar;
+    private SimpleDateFormat timeFormat;
+    private SimpleDateFormat dateFormat;
+
     private float density;
 
     private final Runnable clockUpdater = new Runnable() {
@@ -83,6 +87,11 @@ public class AnalogClockView extends View {
                 .getDisplayMetrics().density;
 
         setBackgroundColor(Color.WHITE);
+
+        // Pre-initialize Time/Date formatters once
+        calendar = Calendar.getInstance();
+        timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
         facePaint.setColor(Color.rgb(248, 250, 255));
         facePaint.setStyle(Paint.Style.FILL);
@@ -256,8 +265,8 @@ public class AnalogClockView extends View {
             );
         }
 
-        // THOI GIAN THIET BI
-        Calendar calendar = Calendar.getInstance();
+        // THOI GIAN THIET BI (Cap nhat tren calendar da co, khong tao moi)
+        calendar.setTimeInMillis(System.currentTimeMillis());
 
         int hour = calendar.get(Calendar.HOUR);
         int minute = calendar.get(Calendar.MINUTE);
@@ -298,19 +307,7 @@ public class AnalogClockView extends View {
                 dp(6), centerPaint
         );
 
-        // GIO KY THUAT SO
-        SimpleDateFormat timeFormat =
-                new SimpleDateFormat(
-                        "HH:mm:ss",
-                        Locale.getDefault()
-                );
-
-        SimpleDateFormat dateFormat =
-                new SimpleDateFormat(
-                        "dd/MM/yyyy",
-                        Locale.getDefault()
-                );
-
+        // GIO KY THUAT SO (Dung formatters tai su dung)
         canvas.drawText(
                 timeFormat.format(calendar.getTime()),
                 centerX,
