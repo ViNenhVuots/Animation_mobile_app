@@ -43,6 +43,8 @@
     <string name="lbl_spring_format">Spring Strength: %1$d</string>
     <string name="lbl_bounce_default">Bounce: 70%</string>
     <string name="lbl_bounce_format">Bounce: %1$d%%</string>
+    <string name="lbl_mass_default">Ball Mass: 1.0 kg</string>
+    <string name="lbl_mass_format">Ball Mass: %1$.1f kg</string>
     <string name="btn_reset_ball">RESET BALL</string>
     <string name="property_animation_title">Property Animation</string>
     <string name="property_animation_desc">ObjectAnimator + AnimatorSet</string>

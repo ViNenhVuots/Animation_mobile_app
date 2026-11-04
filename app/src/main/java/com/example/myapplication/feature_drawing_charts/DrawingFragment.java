@@ -193,11 +193,21 @@ public class DrawingFragment extends Fragment {
         // D. UNDO, REDO, CLEAR, SAVE VA PEN/ERASER
         // =====================================
 
-        btnUndo.setOnClickListener(v -> drawingCanvas.undo());
-        btnRedo.setOnClickListener(v -> drawingCanvas.redo());
-        btnClear.setOnClickListener(v -> drawingCanvas.clearCanvas());
+        btnUndo.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            drawingCanvas.undo();
+        });
+        btnRedo.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            drawingCanvas.redo();
+        });
+        btnClear.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            drawingCanvas.clearCanvas();
+        });
 
         btnSave.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
             if (getContext() != null) {
                 String fileName = "ScienceLab_Art_" + System.currentTimeMillis();
                 boolean success = drawingCanvas.exportToGallery(getContext(), fileName);
@@ -210,6 +220,7 @@ public class DrawingFragment extends Fragment {
         });
 
         btnPen.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
             drawingCanvas.setPenMode();
             int size = (int) drawingCanvas.getBrushSize();
             seekBrushSize.setProgress(size);
@@ -217,6 +228,7 @@ public class DrawingFragment extends Fragment {
         });
 
         btnEraser.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
             drawingCanvas.setEraserMode();
             int size = (int) drawingCanvas.getEraserSize();
             seekBrushSize.setProgress(size);
@@ -227,9 +239,18 @@ public class DrawingFragment extends Fragment {
         // E. DIEU KHIEN DYNAMIC CHART
         // =====================================
 
-        btnStartChart.setOnClickListener(v -> dynamicChart.startAnimation());
-        btnPauseChart.setOnClickListener(v -> dynamicChart.pauseAnimation());
-        btnResetChart.setOnClickListener(v -> dynamicChart.resetChart());
+        btnStartChart.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            dynamicChart.startAnimation();
+        });
+        btnPauseChart.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            dynamicChart.pauseAnimation();
+        });
+        btnResetChart.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            dynamicChart.resetChart();
+        });
 
         // Mac dinh hien thi DRAWING (mode 0)
         showMode(0);

@@ -56,6 +56,30 @@ public class PhysicsMathUnitTest {
     }
 
     @Test
+    public void testHookeSpringWithVariableMass() {
+        // Newton's Second Law & Hooke's Law: a = (-k * dx - c * v) / m
+        float displacement = 120.0f;
+        float velocity = 30.0f;
+        float springStrength = 15.0f;
+        float springDamping = 4.0f;
+
+        // When mass = 1.0 kg (default)
+        float accMass1 = PhysicsEngine.calculateHookeSpringAcceleration(
+                displacement, velocity, springStrength, springDamping, 1.0f);
+        assertEquals(-1920.0f, accMass1, DELTA);
+
+        // When mass = 2.0 kg (heavier ball -> acceleration halved)
+        float accMass2 = PhysicsEngine.calculateHookeSpringAcceleration(
+                displacement, velocity, springStrength, springDamping, 2.0f);
+        assertEquals(-960.0f, accMass2, DELTA);
+
+        // When mass = 4.0 kg (very heavy ball -> sluggish acceleration)
+        float accMass4 = PhysicsEngine.calculateHookeSpringAcceleration(
+                displacement, velocity, springStrength, springDamping, 4.0f);
+        assertEquals(-480.0f, accMass4, DELTA);
+    }
+
+    @Test
     public void testBoundaryCollisionMomentumDecay() {
         // Boundary collision: velocity reverses direction and decays by restitution factor
         float incomingVx = 450.0f;

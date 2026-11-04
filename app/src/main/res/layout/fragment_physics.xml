@@ -148,6 +148,26 @@
                 android:progressTint="#4355C7"
                 android:thumbTint="#4355C7"/>
 
+            <!-- BALL MASS / WEIGHT -->
+            <TextView
+                android:id="@+id/txtMass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/lbl_mass_default"
+                android:textColor="#334155"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <SeekBar
+                android:id="@+id/seekMass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="45"
+                android:progress="5"
+                android:progressTint="#4355C7"
+                android:thumbTint="#4355C7"/>
+
             <!-- RESET PHYSICS -->
             <Button
                 android:id="@+id/btnReset"

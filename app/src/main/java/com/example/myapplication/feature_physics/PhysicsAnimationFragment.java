@@ -52,6 +52,9 @@ public class PhysicsAnimationFragment extends Fragment {
         SeekBar seekBounce =
                 view.findViewById(R.id.seekBounce);
 
+        SeekBar seekMass =
+                view.findViewById(R.id.seekMass);
+
         // Anh xa TextView
         TextView txtGravity =
                 view.findViewById(R.id.txtGravity);
@@ -61,6 +64,9 @@ public class PhysicsAnimationFragment extends Fragment {
 
         TextView txtBounce =
                 view.findViewById(R.id.txtBounce);
+
+        TextView txtMass =
+                view.findViewById(R.id.txtMass);
 
         // Nut Reset Physics
         Button btnReset =
@@ -113,21 +119,42 @@ public class PhysicsAnimationFragment extends Fragment {
                 })
         );
 
+        // Dieu chinh do nang (khoi luong qua bong)
+        seekMass.setOnSeekBarChangeListener(
+                createListener(progress -> {
+                    float mass = 0.5f + (progress * 0.1f);
+                    physicsView.setMass(mass);
+                    txtMass.setText(getString(R.string.lbl_mass_format, mass));
+                })
+        );
+
         // Reset bong Physics
-        btnReset.setOnClickListener(v -> physicsView.resetBall());
+        btnReset.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            physicsView.resetBall();
+        });
 
         // ==============================
         // PROPERTY ANIMATION CONTROLS
         // ==============================
 
         // START: Di chuyen, xoay va phong to
-        btnStartProperty.setOnClickListener(v -> animationHelper.startAnimation(animationTarget));
+        btnStartProperty.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            animationHelper.startAnimation(animationTarget);
+        });
 
         // STOP: Dung hieu ung
-        btnStopProperty.setOnClickListener(v -> animationHelper.stopAnimation());
+        btnStopProperty.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            animationHelper.stopAnimation();
+        });
 
         // RESET: Khoi phuc vi tri va kich thuoc
-        btnResetProperty.setOnClickListener(v -> animationHelper.resetAnimation(animationTarget));
+        btnResetProperty.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            animationHelper.resetAnimation(animationTarget);
+        });
 
         return view;
     }

@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -22,6 +24,15 @@ public class ParticleFireWaterView extends View {
 
     private static final int MAX_PARTICLES = 180;
     private static final int MAX_POOL_CAPACITY = 400;
+
+    // FPS & Diagnostics Overlay
+    private final Paint paintFpsBg = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint paintFpsText = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final RectF fpsBgRect = new RectF();
+    private long lastFpsUpdateTime = 0L;
+    private int fpsFrameCount = 0;
+    private int currentFps = 60;
+    private String fpsDisplayString = "FPS: 60 | Active: 0 | Pool: 120 | Zero GC";
 
     // Const arrays to eliminate per-particle allocation
     private static final int[] FIRE_COLORS = {
@@ -85,6 +96,16 @@ public class ParticleFireWaterView extends View {
     }
 
     private void init() {
+        setHapticFeedbackEnabled(true);
+
+        paintFpsBg.setColor(0xB319243C);
+        paintFpsBg.setStyle(Paint.Style.FILL);
+
+        paintFpsText.setColor(0xFF38BDF8); // Sky blue
+        paintFpsText.setTextSize(26f);
+        paintFpsText.setTextAlign(Paint.Align.LEFT);
+        paintFpsText.setFakeBoldText(true);
+
         // Pre-warm the pool to guarantee Zero Allocation during the rendering loop
         for (int i = 0; i < 120; i++) {
             particlePool.add(new Particle());
@@ -263,6 +284,22 @@ public class ParticleFireWaterView extends View {
             );
         }
 
+        // Render FPS & Pool Diagnostic Overlay (Zero Allocation)
+        fpsFrameCount++;
+        if (now - lastFpsUpdateTime >= 500L) {
+            if (lastFpsUpdateTime > 0L) {
+                currentFps = (int) (fpsFrameCount * 1000L / (now - lastFpsUpdateTime));
+            }
+            fpsFrameCount = 0;
+            lastFpsUpdateTime = now;
+            fpsDisplayString = "FPS: " + currentFps + " | Active: " + particles.size() + " | Pool: " + particlePool.size() + " | Zero GC";
+        }
+
+        float textWidth = paintFpsText.measureText(fpsDisplayString);
+        fpsBgRect.set(16f, 16f, 16f + textWidth + 24f, 16f + 36f);
+        canvas.drawRoundRect(fpsBgRect, 10f, 10f, paintFpsBg);
+        canvas.drawText(fpsDisplayString, 28f, 16f + 25f, paintFpsText);
+
         if (getVisibility() == VISIBLE
                 && isAttachedToWindow()) {
             postInvalidateOnAnimation();
@@ -277,6 +314,7 @@ public class ParticleFireWaterView extends View {
                 touching = true;
                 emitterX = event.getX();
                 emitterY = event.getY();
+                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 return true;
 
             case MotionEvent.ACTION_MOVE:

@@ -38,7 +38,7 @@ public final class PhysicsEngine {
     }
 
     /**
-     * Computes Hooke's restoration acceleration with viscous damping:
+     * Computes Hooke's restoration acceleration with viscous damping (normalized mass = 1.0):
      * a = -k * dx - c * v
      */
     public static float calculateHookeSpringAcceleration(
@@ -46,7 +46,21 @@ public final class PhysicsEngine {
             float velocity,
             float springStrength,
             float springDamping) {
-        return (-springStrength * displacement) - (springDamping * velocity);
+        return calculateHookeSpringAcceleration(displacement, velocity, springStrength, springDamping, 1.0f);
+    }
+
+    /**
+     * Computes Hooke's restoration acceleration with mass:
+     * a = (-k * dx - c * v) / m
+     */
+    public static float calculateHookeSpringAcceleration(
+            float displacement,
+            float velocity,
+            float springStrength,
+            float springDamping,
+            float mass) {
+        float safeMass = Math.max(0.1f, mass);
+        return ((-springStrength * displacement) - (springDamping * velocity)) / safeMass;
     }
 
     /**

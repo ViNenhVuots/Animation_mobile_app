@@ -3,10 +3,14 @@ package com.example.myapplication.feature_physics;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.Locale;
 
 public class SpringGravityView extends View {
 
@@ -16,7 +20,20 @@ public class SpringGravityView extends View {
 
     private float ballX = 200f;
     private float ballY = 200f;
+    private static final float BASE_RADIUS = 36f;
     private float radius = 45f;
+
+    // Khoi luong qua bong (kg)
+    private float mass = 1.0f;
+
+    // FPS & Diagnostics Overlay (Zero GC in loop)
+    private final Paint paintFpsBg = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint paintFpsText = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final RectF fpsBgRect = new RectF();
+    private long lastFpsUpdateTime = 0L;
+    private int fpsFrameCount = 0;
+    private int currentFps = 60;
+    private String fpsDisplayString = "FPS: 60 | Mass: 1.0kg | Zero GC";
 
     // Van toc tinh theo pixel/giay
     private float velocityX = 0f;
@@ -48,6 +65,8 @@ public class SpringGravityView extends View {
     }
 
     private void init() {
+        setHapticFeedbackEnabled(true);
+
         paintBall = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintBall.setColor(0xFF3F51B5);
         paintBall.setStyle(Paint.Style.FILL);
@@ -60,6 +79,32 @@ public class SpringGravityView extends View {
         paintAnchor = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintAnchor.setColor(0xFFE53935);
         paintAnchor.setStyle(Paint.Style.FILL);
+
+        paintFpsBg.setColor(0xB319243C); // Dark blue translucent
+        paintFpsBg.setStyle(Paint.Style.FILL);
+
+        paintFpsText.setColor(0xFF4ADE80); // Neon green
+        paintFpsText.setTextSize(26f);
+        paintFpsText.setTextAlign(Paint.Align.LEFT);
+        paintFpsText.setFakeBoldText(true);
+
+        updateBallAppearance();
+    }
+
+    private void updateBallAppearance() {
+        // Ban kinh ti le theo khoi luong
+        radius = BASE_RADIUS * (float) Math.pow(mass, 0.38);
+
+        // Chuyen mau dam dan khi qua bong nang hon
+        if (paintBall != null) {
+            if (mass <= 1.5f) {
+                paintBall.setColor(0xFF3F51B5); // Indigo
+            } else if (mass <= 3.0f) {
+                paintBall.setColor(0xFF283593); // Deep Indigo
+            } else {
+                paintBall.setColor(0xFF263238); // Steel Grey / Lead
+            }
+        }
     }
 
     @Override
@@ -89,9 +134,9 @@ public class SpringGravityView extends View {
             float dy = ballY - anchorY;
 
             accelerationX += PhysicsEngine.calculateHookeSpringAcceleration(
-                    dx, velocityX, springStrength, springDamping);
+                    dx, velocityX, springStrength, springDamping, mass);
             accelerationY += PhysicsEngine.calculateHookeSpringAcceleration(
-                    dy, velocityY, springStrength, springDamping);
+                    dy, velocityY, springStrength, springDamping, mass);
         }
 
         velocityX = PhysicsEngine.integrateVelocity(velocityX, accelerationX, dt);
@@ -100,28 +145,44 @@ public class SpringGravityView extends View {
         ballX = PhysicsEngine.integratePosition(ballX, velocityX, dt);
         ballY = PhysicsEngine.integratePosition(ballY, velocityY, dt);
 
+        boolean collided = false;
+        float impactSpeed = 0f;
+
         // Va cham canh trai
         if (ballX < radius) {
             ballX = radius;
+            impactSpeed = Math.abs(velocityX);
             velocityX = PhysicsEngine.resolvePositiveBoundaryBounce(velocityX, bounce);
+            collided = true;
         }
 
         // Va cham canh phai
         if (ballX > getWidth() - radius) {
             ballX = getWidth() - radius;
+            impactSpeed = Math.max(impactSpeed, Math.abs(velocityX));
             velocityX = PhysicsEngine.resolveBoundaryBounce(velocityX, bounce);
+            collided = true;
         }
 
         // Va cham canh tren
         if (ballY < radius) {
             ballY = radius;
+            impactSpeed = Math.max(impactSpeed, Math.abs(velocityY));
             velocityY = PhysicsEngine.resolvePositiveBoundaryBounce(velocityY, bounce);
+            collided = true;
         }
 
         // Va cham canh duoi
         if (ballY > getHeight() - radius) {
             ballY = getHeight() - radius;
+            impactSpeed = Math.max(impactSpeed, Math.abs(velocityY));
             velocityY = PhysicsEngine.resolveBoundaryBounce(velocityY, bounce);
+            collided = true;
+        }
+
+        // Haptic feedback khi va cham manh vao 4 bien
+        if (collided && impactSpeed > 160f) {
+            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
         }
     }
 
@@ -158,6 +219,22 @@ public class SpringGravityView extends View {
                 ballX, ballY, radius, paintBall
         );
 
+        // Render FPS & Diagnostics Overlay (Zero GC per frame)
+        fpsFrameCount++;
+        if (currentTime - lastFpsUpdateTime >= 500L) {
+            if (lastFpsUpdateTime > 0L) {
+                currentFps = (int) (fpsFrameCount * 1000L / (currentTime - lastFpsUpdateTime));
+            }
+            fpsFrameCount = 0;
+            lastFpsUpdateTime = currentTime;
+            fpsDisplayString = "FPS: " + currentFps + " | Mass: " + String.format(Locale.US, "%.1f", mass) + "kg | Zero GC";
+        }
+
+        float textWidth = paintFpsText.measureText(fpsDisplayString);
+        fpsBgRect.set(16f, 16f, 16f + textWidth + 24f, 16f + 36f);
+        canvas.drawRoundRect(fpsBgRect, 10f, 10f, paintFpsBg);
+        canvas.drawText(fpsDisplayString, 28f, 16f + 25f, paintFpsText);
+
         if (getVisibility() == VISIBLE &&
                 isShown() &&
                 getWindowVisibility() == VISIBLE) {
@@ -187,6 +264,7 @@ public class SpringGravityView extends View {
                 isDragging = true;
                 springEnabled = true;
                 allowParentScroll(false);
+                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 
                 ballX = clamp(
                         event.getX(), radius,
@@ -274,10 +352,21 @@ public class SpringGravityView extends View {
         invalidate();
     }
 
-    // Thay doi he so bat nay
+    // Thay doi do bat nay
     public void setBounce(float value) {
         bounce = value;
         invalidate();
+    }
+
+    // Thay doi do nang (khoi luong qua bong)
+    public void setMass(float value) {
+        mass = Math.max(0.5f, Math.min(5.0f, value));
+        updateBallAppearance();
+        invalidate();
+    }
+
+    public float getMass() {
+        return mass;
     }
 
     // Reset vi tri va van toc cua bong

@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
+import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -93,6 +94,7 @@ public class DrawingCanvasView extends View {
     }
 
     private void init() {
+        setHapticFeedbackEnabled(true);
         setBackgroundColor(Color.WHITE);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
 
@@ -116,6 +118,7 @@ public class DrawingCanvasView extends View {
                         currentPaint = null;
 
                         undo();
+                        performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 
                         Toast.makeText(
                                 getContext(),
@@ -136,6 +139,8 @@ public class DrawingCanvasView extends View {
 
                         currentPath = null;
                         currentPaint = null;
+
+                        performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 
                         if (isEraserMode()) {
                             setPenMode();
@@ -380,6 +385,10 @@ public class DrawingCanvasView extends View {
                 contentValues.clear();
                 contentValues.put(MediaStore.Images.Media.IS_PENDING, 0);
                 resolver.update(imageUri, contentValues, null, null);
+            }
+
+            if (success) {
+                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
             }
 
             return success;

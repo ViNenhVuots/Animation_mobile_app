@@ -41,18 +41,23 @@ public class SimulationFragment extends Fragment {
 
         // Che do lua
         btnFire.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
             particleView.setMode(ParticleFireWaterView.MODE_FIRE);
             txtMode.setText(getString(R.string.lbl_current_mode_fire));
         });
 
         // Che do nuoc
         btnWater.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
             particleView.setMode(ParticleFireWaterView.MODE_WATER);
             txtMode.setText(getString(R.string.lbl_current_mode_water));
         });
 
         // Xoa tat ca hat hien tai
-        btnClear.setOnClickListener(v -> particleView.clearParticles());
+        btnClear.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            particleView.clearParticles();
+        });
 
         return view;
     }
