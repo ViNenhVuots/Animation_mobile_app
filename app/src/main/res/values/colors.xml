@@ -2,4 +2,32 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Modern Science Lab Palette -->
+    <color name="lab_bg">#F4F7FE</color>
+    <color name="lab_surface">#FFFFFF</color>
+    <color name="lab_surface_variant">#F8FAFC</color>
+    <color name="lab_border">#E2E8F0</color>
+    <color name="lab_border_strong">#CBD5E1</color>
+
+    <!-- Brand & Accents -->
+    <color name="lab_primary">#4355C7</color>
+    <color name="lab_primary_dark">#313F9F</color>
+    <color name="lab_primary_light">#EEF2FF</color>
+    <color name="lab_primary_soft">#E0E7FF</color>
+
+    <color name="lab_coral">#E46B63</color>
+    <color name="lab_coral_light">#FFF0EA</color>
+
+    <color name="lab_teal">#0F9E91</color>
+    <color name="lab_teal_light">#E5F7F2</color>
+
+    <color name="lab_water">#0284C7</color>
+    <color name="lab_water_light">#E0F2FE</color>
+
+    <!-- Typography -->
+    <color name="lab_text_primary">#0F172A</color>
+    <color name="lab_text_secondary">#475569</color>
+    <color name="lab_text_muted">#64748B</color>
+    <color name="lab_text_subtle">#94A3B8</color>
 </resources>

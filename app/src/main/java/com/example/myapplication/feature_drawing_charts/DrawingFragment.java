@@ -1,5 +1,6 @@
 package com.example.myapplication.feature_drawing_charts;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
+import com.google.android.material.button.MaterialButton;
 
 public class DrawingFragment extends Fragment {
 
@@ -25,10 +27,15 @@ public class DrawingFragment extends Fragment {
     private Button btnDrawingMode;
     private Button btnChartMode;
 
+    private Button btnPen;
+    private Button btnEraser;
+    private Button[] colorButtons;
+
     private LinearLayout drawingControls;
     private LinearLayout chartControls;
 
     private TextView txtBrushSize;
+    private SeekBar seekBrushSize;
 
     @Nullable
     @Override
@@ -82,6 +89,8 @@ public class DrawingFragment extends Fragment {
         Button btnYellow =
                 view.findViewById(R.id.btnYellow);
 
+        colorButtons = new Button[]{btnBlack, btnRed, btnBlue, btnGreen, btnYellow};
+
         // 4. Nut Undo, Redo, Clear, Save va Pen/Eraser
         Button btnUndo =
                 view.findViewById(R.id.btnUndo);
@@ -95,14 +104,14 @@ public class DrawingFragment extends Fragment {
         Button btnSave =
                 view.findViewById(R.id.btnSave);
 
-        Button btnPen =
+        btnPen =
                 view.findViewById(R.id.btnPen);
 
-        Button btnEraser =
+        btnEraser =
                 view.findViewById(R.id.btnEraser);
 
         // 5. Thanh chinh do day but
-        SeekBar seekBrushSize =
+        seekBrushSize =
                 view.findViewById(R.id.seekBrushSize);
 
         // 6. Cac nut dieu khien bieu do
@@ -126,20 +135,11 @@ public class DrawingFragment extends Fragment {
         // B. CHON MAU BUT
         // =====================================
 
-        btnBlack.setOnClickListener(v ->
-                drawingCanvas.setBrushColor(Color.BLACK));
-
-        btnRed.setOnClickListener(v ->
-                drawingCanvas.setBrushColor(Color.RED));
-
-        btnBlue.setOnClickListener(v ->
-                drawingCanvas.setBrushColor(Color.BLUE));
-
-        btnGreen.setOnClickListener(v ->
-                drawingCanvas.setBrushColor(Color.GREEN));
-
-        btnYellow.setOnClickListener(v ->
-                drawingCanvas.setBrushColor(Color.YELLOW));
+        btnBlack.setOnClickListener(v -> selectBrushColor(Color.BLACK, 0));
+        btnRed.setOnClickListener(v -> selectBrushColor(Color.RED, 1));
+        btnBlue.setOnClickListener(v -> selectBrushColor(Color.BLUE, 2));
+        btnGreen.setOnClickListener(v -> selectBrushColor(Color.GREEN, 3));
+        btnYellow.setOnClickListener(v -> selectBrushColor(Color.YELLOW, 4));
 
         // =====================================
         // C. CHINH DO DAY NET VE
@@ -217,6 +217,7 @@ public class DrawingFragment extends Fragment {
             int size = (int) drawingCanvas.getBrushSize();
             seekBrushSize.setProgress(size);
             txtBrushSize.setText(getString(R.string.lbl_brush_size_format, size));
+            updateToolUI(false);
         });
 
         btnEraser.setOnClickListener(v -> {
@@ -225,6 +226,7 @@ public class DrawingFragment extends Fragment {
             int size = (int) drawingCanvas.getEraserSize();
             seekBrushSize.setProgress(size);
             txtBrushSize.setText(getString(R.string.lbl_eraser_size_format, size));
+            updateToolUI(true);
         });
 
         // =====================================
@@ -246,8 +248,63 @@ public class DrawingFragment extends Fragment {
 
         // Mac dinh hien thi DRAWING (mode 0)
         showMode(0);
+        updateToolUI(false);
 
         return view;
+    }
+
+    private void selectBrushColor(int color, int selectedIndex) {
+        drawingCanvas.setBrushColor(color);
+        int size = (int) drawingCanvas.getBrushSize();
+        if (seekBrushSize != null) {
+            seekBrushSize.setProgress(size);
+        }
+        if (txtBrushSize != null) {
+            txtBrushSize.setText(getString(R.string.lbl_brush_size_format, size));
+        }
+        updateToolUI(false);
+        updateColorSwatchUI(selectedIndex);
+    }
+
+    private void updateToolUI(boolean isEraser) {
+        int activeBg = Color.parseColor("#4355C7");
+        int inactiveBg = Color.parseColor("#E1E7FA");
+        int activeText = Color.WHITE;
+        int inactiveText = Color.parseColor("#4355C7");
+
+        if (btnPen != null) {
+            btnPen.setBackgroundTintList(ColorStateList.valueOf(isEraser ? inactiveBg : activeBg));
+            btnPen.setTextColor(isEraser ? inactiveText : activeText);
+            if (btnPen instanceof MaterialButton) {
+                ((MaterialButton) btnPen).setIconTint(ColorStateList.valueOf(isEraser ? inactiveText : activeText));
+            }
+        }
+        if (btnEraser != null) {
+            btnEraser.setBackgroundTintList(ColorStateList.valueOf(isEraser ? activeBg : inactiveBg));
+            btnEraser.setTextColor(isEraser ? activeText : inactiveText);
+            if (btnEraser instanceof MaterialButton) {
+                ((MaterialButton) btnEraser).setIconTint(ColorStateList.valueOf(isEraser ? activeText : inactiveText));
+            }
+        }
+    }
+
+    private void updateColorSwatchUI(int selectedIndex) {
+        if (colorButtons == null) return;
+        for (int i = 0; i < colorButtons.length; i++) {
+            Button btn = colorButtons[i];
+            if (btn == null) continue;
+            boolean isSelected = (i == selectedIndex);
+            btn.setBackgroundTintList(ColorStateList.valueOf(
+                    Color.parseColor(isSelected ? "#DCE3FF" : "#EDF0FA")
+            ));
+            if (btn instanceof MaterialButton) {
+                MaterialButton mb = (MaterialButton) btn;
+                mb.setStrokeColor(ColorStateList.valueOf(
+                        Color.parseColor(isSelected ? "#4355C7" : "#CBD5E1")
+                ));
+                mb.setStrokeWidth(isSelected ? 4 : 2);
+            }
+        }
     }
 
     private void showMode(int mode) {
@@ -283,15 +340,22 @@ public class DrawingFragment extends Fragment {
 
             boolean selected = (i == selectedTab);
 
-            int color = selected
+            int bgColor = selected
                     ? Color.parseColor("#4355C7")
-                    : Color.parseColor("#64748B");
+                    : Color.parseColor("#EEF2F9");
+
+            int textColor = selected
+                    ? Color.WHITE
+                    : Color.parseColor("#475569");
 
             tabs[i].setBackgroundTintList(
-                    android.content.res.ColorStateList.valueOf(color)
+                    ColorStateList.valueOf(bgColor)
             );
 
-            tabs[i].setTextColor(Color.WHITE);
+            tabs[i].setTextColor(textColor);
+            if (tabs[i] instanceof MaterialButton) {
+                ((MaterialButton) tabs[i]).setIconTint(ColorStateList.valueOf(textColor));
+            }
             tabs[i].setSelected(selected);
         }
     }
@@ -317,8 +381,12 @@ public class DrawingFragment extends Fragment {
         dynamicChart = null;
         btnDrawingMode = null;
         btnChartMode = null;
+        btnPen = null;
+        btnEraser = null;
+        colorButtons = null;
         drawingControls = null;
         chartControls = null;
         txtBrushSize = null;
+        seekBrushSize = null;
     }
 }

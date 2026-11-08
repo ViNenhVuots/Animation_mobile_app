@@ -1,140 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lab_bg"
     android:orientation="vertical"
-    android:background="#F5F7FC"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="14dp"
     android:paddingBottom="16dp">
 
     <!-- HEADER -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_science_lab"
-        android:textColor="#4355C7"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="14dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/subtitle_simulation"
-        android:textColor="#19243C"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_badge_coral"
+            android:letterSpacing="0.08"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="@string/title_science_lab"
+            android:textColor="@color/lab_coral"
+            android:textSize="10sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/tag_simulation_features"
-        android:textColor="#64748B"
-        android:textSize="13sp"
-        android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:text="@string/subtitle_simulation"
+            android:textColor="@color/lab_text_primary"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:text="@string/tag_simulation_features"
+            android:textColor="@color/lab_text_muted"
+            android:textSize="12sp" />
+
+    </LinearLayout>
 
     <!-- MAIN SIMULATION CARD -->
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:background="#FFFFFF"
-        android:padding="12dp"
-        android:elevation="3dp">
+        app:cardBackgroundColor="@color/lab_surface"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="3dp"
+        app:strokeColor="@color/lab_border"
+        app:strokeWidth="1dp">
 
-        <!-- CARD HEADER -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/simulation_playground_title"
-            android:textColor="#19243C"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="12dp"
-            android:text="@string/simulation_playground_desc"
-            android:textColor="#64748B"
-            android:textSize="12sp"/>
-
-        <!-- PARTICLE CANVAS -->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="#0D1424"
-            android:clipChildren="true"
-            android:clipToPadding="true">
-
-            <com.example.myapplication.feature_simulation.ParticleFireWaterView
-                android:id="@+id/particleView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-        </FrameLayout>
-
-        <!-- CURRENT MODE -->
-        <TextView
-            android:id="@+id/txtMode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="12dp"
-            android:text="@string/lbl_current_mode_fire"
-            android:textColor="#E46B63"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:gravity="center"/>
-
-        <!-- CONTROL BUTTONS -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <Button
-                android:id="@+id/btnFire"
-                android:layout_width="0dp"
+            <!-- CARD HEADER -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/btn_fire_mode"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#E46B63"
-                android:textSize="12sp"/>
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnWater"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/btn_water_mode"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#4355C7"
-                android:textSize="12sp"/>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:cardBackgroundColor="@color/lab_coral_light"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp">
 
-            <Button
-                android:id="@+id/btnClear"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_nav_simulation"
+                        app:tint="@color/lab_coral" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="12dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/simulation_playground_title"
+                        android:textColor="@color/lab_text_primary"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/simulation_playground_desc"
+                        android:textColor="@color/lab_text_muted"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- ROUNDED PARTICLE CANVAS -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="@string/btn_clear"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#64748B"
-                android:textSize="12sp"/>
+                app:cardBackgroundColor="#0D1424"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#1E293B"
+                app:strokeWidth="1.5dp">
+
+                <com.example.myapplication.feature_simulation.ParticleFireWaterView
+                    android:id="@+id/particleView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- CURRENT MODE PILL BADGE -->
+            <TextView
+                android:id="@+id/txtMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_badge_coral"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="6dp"
+                android:text="@string/lbl_current_mode_fire"
+                android:textColor="@color/lab_coral"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <!-- CONTROL BUTTONS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFire"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/lab_coral"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:paddingHorizontal="8dp"
+                    android:text="@string/btn_fire_mode"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="14dp"
+                    app:icon="@drawable/ic_nav_simulation"
+                    app:iconGravity="textStart"
+                    app:iconPadding="6dp"
+                    app:iconSize="16dp"
+                    app:iconTint="#FFFFFF" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnWater"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/lab_primary"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:paddingHorizontal="8dp"
+                    android:text="@string/btn_water_mode"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="14dp"
+                    app:icon="@drawable/ic_water"
+                    app:iconGravity="textStart"
+                    app:iconPadding="6dp"
+                    app:iconSize="16dp"
+                    app:iconTint="#FFFFFF" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnClear"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/lab_text_muted"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:paddingHorizontal="8dp"
+                    android:text="@string/btn_clear"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="14dp"
+                    app:icon="@drawable/ic_delete"
+                    app:iconGravity="textStart"
+                    app:iconPadding="6dp"
+                    app:iconSize="16dp"
+                    app:iconTint="#FFFFFF" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

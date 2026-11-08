@@ -1,5 +1,6 @@
 package com.example.myapplication.feature_simulation;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,8 @@ public class SimulationFragment extends Fragment {
             v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
             particleView.setMode(ParticleFireWaterView.MODE_FIRE);
             txtMode.setText(getString(R.string.lbl_current_mode_fire));
+            txtMode.setTextColor(Color.parseColor("#E46B63"));
+            txtMode.setBackgroundResource(R.drawable.bg_badge_coral);
         });
 
         // Che do nuoc
@@ -51,6 +54,8 @@ public class SimulationFragment extends Fragment {
             v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
             particleView.setMode(ParticleFireWaterView.MODE_WATER);
             txtMode.setText(getString(R.string.lbl_current_mode_water));
+            txtMode.setTextColor(Color.parseColor("#4355C7"));
+            txtMode.setBackgroundResource(R.drawable.bg_badge_indigo);
         });
 
         // Xoa tat ca hat hien tai

@@ -1,9 +1,24 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.MyApplication" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/lab_primary</item>
+        <item name="colorPrimaryContainer">@color/lab_primary_light</item>
+        <item name="colorOnPrimaryContainer">@color/lab_primary</item>
+        <item name="colorSecondary">@color/lab_teal</item>
+        <item name="colorSecondaryContainer">@color/lab_teal_light</item>
+        <item name="android:windowBackground">@color/lab_bg</item>
+        <item name="android:statusBarColor">@color/lab_bg</item>
+        <item name="android:navigationBarColor">@color/lab_surface</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
+
+    <!-- Bottom Navigation Active Indicator -->
+    <style name="Widget.ScienceLab.BottomNav.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/lab_primary_soft</item>
+        <item name="android:width">56dp</item>
+        <item name="android:height">32dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
+    </style>
 </resources>

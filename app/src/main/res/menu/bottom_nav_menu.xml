@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_home"
-        android:icon="@android:drawable/ic_menu_info_details"
+        android:icon="@drawable/ic_nav_home"
         android:title="@string/menu_home" />
     <item
         android:id="@+id/nav_physics"
-        android:icon="@android:drawable/ic_menu_compass"
+        android:icon="@drawable/ic_nav_physics"
         android:title="@string/menu_physics" />
     <item
         android:id="@+id/nav_simulation"
-        android:icon="@android:drawable/ic_menu_gallery"
+        android:icon="@drawable/ic_nav_simulation"
         android:title="@string/menu_simulation" />
     <item
         android:id="@+id/nav_drawing"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/ic_nav_drawing"
         android:title="@string/menu_drawing" />
 </menu>
