@@ -129,13 +129,7 @@ public class DynamicChartView extends View {
         for (int i = 0; i < values.length; i++) {
             startValues[i] = values[i];
 
-            float change =
-                    (random.nextFloat() - 0.5f) * 30f;
-
-            targetValues[i] = Math.max(
-                    0f,
-                    Math.min(100f, values[i] + change)
-            );
+            targetValues[i] = ChartMath.target(values[i], random.nextFloat());
         }
     }
 
@@ -161,9 +155,8 @@ public class DynamicChartView extends View {
                     (float) animation.getAnimatedValue();
 
             for (int i = 0; i < values.length; i++) {
-                values[i] = startValues[i]
-                        + (targetValues[i] - startValues[i])
-                        * progress;
+                values[i] = ChartMath.interpolate(
+                        startValues[i], targetValues[i], progress);
             }
 
             invalidate();
@@ -287,8 +280,7 @@ public class DynamicChartView extends View {
         for (int i = 0; i <= 4; i++) {
             int label = i * 25;
 
-            float y = bottom -
-                    (label / 100f) * chartHeight;
+            float y = ChartMath.valueToY(label, bottom, chartHeight);
 
             canvas.drawLine(
                     left, y,
@@ -312,8 +304,7 @@ public class DynamicChartView extends View {
 
         for (int i = 0; i < values.length; i++) {
             float x = left + i * stepX;
-            float y = bottom -
-                    (values[i] / 100f) * chartHeight;
+            float y = ChartMath.valueToY(values[i], bottom, chartHeight);
 
             if (i == 0) {
                 areaPath.lineTo(x, y);
@@ -336,8 +327,7 @@ public class DynamicChartView extends View {
 
         for (int i = 0; i < values.length; i++) {
             float x = left + i * stepX;
-            float y = bottom -
-                    (values[i] / 100f) * chartHeight;
+            float y = ChartMath.valueToY(values[i], bottom, chartHeight);
 
             canvas.drawCircle(
                     x, y, dp(5), pointPaint

@@ -11,7 +11,7 @@
     <string name="subtitle_drawing_charts">Drawing &amp; Charts</string>
     <string name="subtitle_physics">Physics Animation</string>
     <string name="subtitle_simulation">Particle Simulation</string>
-    <string name="tag_drawing_features">Canvas  •  Animation  •  Clock</string>
+    <string name="tag_drawing_features">Canvas  •  Animation  •  Chart</string>
     <string name="tag_physics_features">Gravity  •  Spring  •  Collision</string>
     <string name="tag_simulation_features">Fire &amp; Water  •  Interactive Particles</string>
     <string name="android_badge">ANDROID</string>
@@ -26,13 +26,13 @@
     <string name="choose_one">Choose one</string>
     <string name="module_01_label">MODULE 01</string>
     <string name="module_01_title">Physics Animation</string>
-    <string name="module_01_desc">Gravity, Spring, Collision &amp; Property</string>
+    <string name="module_01_desc">Gravity, Spring &amp; Collision</string>
     <string name="module_02_label">MODULE 02</string>
     <string name="module_02_title">Particle Simulation</string>
     <string name="module_02_desc">Fire &amp; Water Particle Effects</string>
     <string name="module_03_label">MODULE 03</string>
     <string name="module_03_title">Drawing &amp; Charts</string>
-    <string name="module_03_desc">Drawing, Dynamic Chart &amp; Clock</string>
+    <string name="module_03_desc">Drawing &amp; Dynamic Chart</string>
 
     <!-- Physics Screen -->
     <string name="physics_playground_title">Physics Playground</string>
@@ -46,8 +46,6 @@
     <string name="lbl_mass_default">Ball Mass: 1.0 kg</string>
     <string name="lbl_mass_format">Ball Mass: %1$.1f kg</string>
     <string name="btn_reset_ball">RESET BALL</string>
-    <string name="property_animation_title">Property Animation</string>
-    <string name="property_animation_desc">ObjectAnimator + AnimatorSet</string>
     <string name="btn_start">START</string>
     <string name="btn_stop">STOP</string>
     <string name="btn_pause">PAUSE</string>
@@ -65,7 +63,6 @@
     <!-- Drawing & Charts Screen -->
     <string name="btn_drawing">DRAWING</string>
     <string name="btn_chart">CHART</string>
-    <string name="btn_clock">CLOCK</string>
     <string name="btn_pen">PEN</string>
     <string name="btn_eraser">ERASER</string>
     <string name="lbl_brush_color">Brush Color</string>
@@ -78,8 +75,6 @@
     <string name="chart_title">Live Data Chart</string>
     <string name="chart_status_live">LIVE - Updating</string>
     <string name="chart_status_paused">PAUSED</string>
-    <string name="clock_title">Analog Clock</string>
-    <string name="clock_subtitle">Local Device Time</string>
 
     <!-- Accessibility Descriptions -->
     <string name="desc_black_brush">Black brush</string>

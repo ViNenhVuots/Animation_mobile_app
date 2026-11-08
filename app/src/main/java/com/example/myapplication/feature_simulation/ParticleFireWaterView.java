@@ -24,6 +24,9 @@ public class ParticleFireWaterView extends View {
 
     private static final int MAX_PARTICLES = 180;
     private static final int MAX_POOL_CAPACITY = 400;
+    private static final int SPLASH_PARTICLES_PER_DROP = 5;
+    private static final int SPLASH_RESERVED_SLOTS = 32;
+    private static final float FLOOR_PADDING_PX = 12f;
 
     // FPS & Diagnostics Overlay
     private final Paint paintFpsBg = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -32,15 +35,7 @@ public class ParticleFireWaterView extends View {
     private long lastFpsUpdateTime = 0L;
     private int fpsFrameCount = 0;
     private int currentFps = 60;
-    private String fpsDisplayString = "FPS: 60 | Active: 0 | Pool: 120 | Zero GC";
-
-    // Const arrays to eliminate per-particle allocation
-    private static final int[] FIRE_COLORS = {
-            Color.RED,
-            Color.rgb(255, 87, 34),
-            Color.rgb(255, 152, 0),
-            Color.YELLOW
-    };
+    private String fpsDisplayString = "FPS: -- | Active: 0 | Pool: 120";
 
     private static final int[] WATER_COLORS = {
             Color.CYAN,
@@ -56,6 +51,7 @@ public class ParticleFireWaterView extends View {
         float life;
         float maxLife;
         int color;
+        boolean splash;
 
         void reset() {
             x = 0f;
@@ -67,10 +63,11 @@ public class ParticleFireWaterView extends View {
             life = 0f;
             maxLife = 0f;
             color = 0;
+            splash = false;
         }
     }
 
-    private final List<Particle> particles = new ArrayList<>();
+    private final List<Particle> particles = new ArrayList<>(MAX_PARTICLES);
     private final List<Particle> particlePool = new ArrayList<>(MAX_POOL_CAPACITY);
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Random random = new Random();
@@ -106,7 +103,7 @@ public class ParticleFireWaterView extends View {
         paintFpsText.setTextAlign(Paint.Align.LEFT);
         paintFpsText.setFakeBoldText(true);
 
-        // Pre-warm the pool to guarantee Zero Allocation during the rendering loop
+        // Pre-warm for reuse. A depleted pool may still allocate particles.
         for (int i = 0; i < 120; i++) {
             particlePool.add(new Particle());
         }
@@ -164,7 +161,10 @@ public class ParticleFireWaterView extends View {
     }
 
     private void createParticle(float x, float y) {
-        if (particles.size() >= MAX_PARTICLES) {
+        int emissionLimit = mode == MODE_WATER
+                ? MAX_PARTICLES - SPLASH_RESERVED_SLOTS
+                : MAX_PARTICLES;
+        if (particles.size() >= emissionLimit) {
             return;
         }
 
@@ -173,6 +173,7 @@ public class ParticleFireWaterView extends View {
         p.x = x;
         p.y = y;
         p.alpha = 1f;
+        p.splash = false;
 
         if (mode == MODE_FIRE) {
             p.vx = (random.nextFloat() - 0.5f) * 100f;
@@ -180,7 +181,7 @@ public class ParticleFireWaterView extends View {
 
             p.size = 5f + random.nextFloat() * 13f;
             p.maxLife = 0.7f + random.nextFloat() * 0.9f;
-            p.color = FIRE_COLORS[random.nextInt(FIRE_COLORS.length)];
+            p.color = ParticleMath.fireColor(0f);
         } else {
             p.vx = (random.nextFloat() - 0.5f) * 100f;
             p.vy = 40f + random.nextFloat() * 100f;
@@ -192,6 +193,30 @@ public class ParticleFireWaterView extends View {
 
         p.life = p.maxLife;
         particles.add(p);
+    }
+
+    private float waterFloorY() {
+        return Math.max(0f, getHeight() - FLOOR_PADDING_PX);
+    }
+
+    private void createSplash(float impactX, float floorY, float dropSize) {
+        for (int j = 0; j < SPLASH_PARTICLES_PER_DROP
+                && particles.size() < MAX_PARTICLES; j++) {
+            Particle child = obtainParticle();
+            child.splash = true;
+            child.size = Math.max(1.5f, dropSize * (0.25f + random.nextFloat() * 0.2f));
+            child.x = Math.max(child.size,
+                    Math.min(getWidth() - child.size, impactX));
+            child.y = floorY - child.size - 1f;
+            // Spread in both horizontal directions, initially moving upward.
+            child.vx = ParticleMath.splashVelocityX(j, random.nextFloat());
+            child.vy = ParticleMath.splashVelocityY(random.nextFloat());
+            child.maxLife = 0.35f + random.nextFloat() * 0.35f;
+            child.life = child.maxLife;
+            child.alpha = 1f;
+            child.color = WATER_COLORS[random.nextInt(WATER_COLORS.length)];
+            particles.add(child);
+        }
     }
 
     private void updateParticles(float dt) {
@@ -211,10 +236,26 @@ public class ParticleFireWaterView extends View {
             p.y += p.vy * dt;
 
             p.life -= dt;
-            p.alpha = Math.max(0f, p.life / p.maxLife);
+            p.alpha = ParticleMath.lifeAlpha(p.life, p.maxLife);
 
             if (mode == MODE_FIRE) {
                 p.size = Math.max(0f, p.size - 5f * dt);
+                p.color = ParticleMath.fireColor(1f - p.life / p.maxLife);
+            }
+
+            // Consume the falling drop once. Splash children never create more splashes.
+            if (mode == MODE_WATER && getHeight() > 0 && p.life > 0f
+                    && ParticleMath.hitsFloor(p.y, p.size, p.vy, waterFloorY())) {
+                boolean shouldSplash = !p.splash;
+                float impactX = p.x;
+                float dropSize = p.size;
+                float floorY = waterFloorY();
+                particles.remove(i);
+                releaseParticle(p);
+                if (ParticleMath.canCreateSplash(!shouldSplash, impactX, getWidth())) {
+                    createSplash(impactX, floorY, dropSize);
+                }
+                continue;
             }
 
             if (p.life <= 0f
@@ -272,7 +313,15 @@ public class ParticleFireWaterView extends View {
 
         updateParticles(dt);
 
-        for (Particle p : particles) {
+        if (mode == MODE_WATER && getHeight() > 0) {
+            paint.setColor(Color.rgb(38, 80, 110));
+            paint.setAlpha(160);
+            paint.setStrokeWidth(2f);
+            canvas.drawLine(0f, waterFloorY(), getWidth(), waterFloorY(), paint);
+        }
+
+        for (int i = 0; i < particles.size(); i++) {
+            Particle p = particles.get(i);
             paint.setColor(p.color);
             paint.setAlpha((int) (p.alpha * 255));
 
@@ -284,7 +333,7 @@ public class ParticleFireWaterView extends View {
             );
         }
 
-        // Render FPS & Pool Diagnostic Overlay (Zero Allocation)
+        // FPS diagnostics: refreshed strings can allocate memory.
         fpsFrameCount++;
         if (now - lastFpsUpdateTime >= 500L) {
             if (lastFpsUpdateTime > 0L) {
@@ -292,7 +341,7 @@ public class ParticleFireWaterView extends View {
             }
             fpsFrameCount = 0;
             lastFpsUpdateTime = now;
-            fpsDisplayString = "FPS: " + currentFps + " | Active: " + particles.size() + " | Pool: " + particlePool.size() + " | Zero GC";
+            fpsDisplayString = "FPS: " + currentFps + " | Active: " + particles.size() + " | Pool: " + particlePool.size();
         }
 
         float textWidth = paintFpsText.measureText(fpsDisplayString);

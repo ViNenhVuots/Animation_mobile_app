@@ -21,11 +21,9 @@ public class DrawingFragment extends Fragment {
 
     private DrawingCanvasView drawingCanvas;
     private DynamicChartView dynamicChart;
-    private AnalogClockView analogClock;
 
     private Button btnDrawingMode;
     private Button btnChartMode;
-    private Button btnClockMode;
 
     private LinearLayout drawingControls;
     private LinearLayout chartControls;
@@ -44,8 +42,6 @@ public class DrawingFragment extends Fragment {
                 container,
                 false
         );
-
-        analogClock = view.findViewById(R.id.analogClock);
 
         // 1. Anh xa cac View
         drawingCanvas =
@@ -69,9 +65,6 @@ public class DrawingFragment extends Fragment {
 
         btnChartMode =
                 view.findViewById(R.id.btnChartMode);
-
-        btnClockMode =
-                view.findViewById(R.id.btnClockMode);
 
         // 3. Cac nut chon mau
         Button btnBlack =
@@ -123,12 +116,11 @@ public class DrawingFragment extends Fragment {
                 view.findViewById(R.id.btnResetChart);
 
         // =====================================
-        // A. CHUYEN CHE DO DRAWING / CHART / CLOCK
+        // A. CHUYEN CHE DO DRAWING / CHART
         // =====================================
 
         btnDrawingMode.setOnClickListener(v -> showMode(0));
         btnChartMode.setOnClickListener(v -> showMode(1));
-        btnClockMode.setOnClickListener(v -> showMode(2));
 
         // =====================================
         // B. CHON MAU BUT
@@ -269,9 +261,6 @@ public class DrawingFragment extends Fragment {
         if (dynamicChart != null) {
             dynamicChart.setVisibility(mode == 1 ? View.VISIBLE : View.GONE);
         }
-        if (analogClock != null) {
-            analogClock.setVisibility(mode == 2 ? View.VISIBLE : View.GONE);
-        }
 
         if (drawingControls != null) {
             drawingControls.setVisibility(mode == 0 ? View.VISIBLE : View.GONE);
@@ -286,8 +275,7 @@ public class DrawingFragment extends Fragment {
     private void updateTabUI(int selectedTab) {
         Button[] tabs = {
                 btnDrawingMode,
-                btnChartMode,
-                btnClockMode
+                btnChartMode
         };
 
         for (int i = 0; i < tabs.length; i++) {
@@ -327,10 +315,8 @@ public class DrawingFragment extends Fragment {
 
         drawingCanvas = null;
         dynamicChart = null;
-        analogClock = null;
         btnDrawingMode = null;
         btnChartMode = null;
-        btnClockMode = null;
         drawingControls = null;
         chartControls = null;
         txtBrushSize = null;

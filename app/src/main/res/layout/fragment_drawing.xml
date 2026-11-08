@@ -78,17 +78,6 @@
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#64748B"/>
 
-            <Button
-                android:id="@+id/btnClockMode"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minWidth="0dp"
-                android:text="@string/btn_clock"
-                android:textSize="10sp"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#64748B"/>
-
         </LinearLayout>
 
         <!-- CANVAS AREA -->
@@ -110,13 +99,6 @@
 
             <com.example.myapplication.feature_drawing_charts.DynamicChartView
                 android:id="@+id/dynamicChart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"
-                android:visibility="gone"/>
-
-            <com.example.myapplication.feature_drawing_charts.AnalogClockView
-                android:id="@+id/analogClock"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#FFFFFF"

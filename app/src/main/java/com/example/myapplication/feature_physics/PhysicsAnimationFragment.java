@@ -18,12 +18,6 @@ public class PhysicsAnimationFragment extends Fragment {
 
     private SpringGravityView physicsView;
 
-    // Doi tuong dung cho Property Animation
-    private View animationTarget;
-
-    // Class quan ly ObjectAnimator va AnimatorSet
-    private PropertyAnimationHelper animationHelper;
-
     @Nullable
     @Override
     public View onCreateView(
@@ -73,24 +67,6 @@ public class PhysicsAnimationFragment extends Fragment {
                 view.findViewById(R.id.btnReset);
 
         // ==============================
-        // PROPERTY ANIMATION
-        // ==============================
-
-        animationTarget =
-                view.findViewById(R.id.animationTarget);
-
-        Button btnStartProperty =
-                view.findViewById(R.id.btnStartProperty);
-
-        Button btnStopProperty =
-                view.findViewById(R.id.btnStopProperty);
-
-        Button btnResetProperty =
-                view.findViewById(R.id.btnResetProperty);
-
-        animationHelper = new PropertyAnimationHelper();
-
-        // ==============================
         // PHYSICS CONTROLS
         // ==============================
 
@@ -134,28 +110,6 @@ public class PhysicsAnimationFragment extends Fragment {
             physicsView.resetBall();
         });
 
-        // ==============================
-        // PROPERTY ANIMATION CONTROLS
-        // ==============================
-
-        // START: Di chuyen, xoay va phong to
-        btnStartProperty.setOnClickListener(v -> {
-            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
-            animationHelper.startAnimation(animationTarget);
-        });
-
-        // STOP: Dung hieu ung
-        btnStopProperty.setOnClickListener(v -> {
-            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
-            animationHelper.stopAnimation();
-        });
-
-        // RESET: Khoi phuc vi tri va kich thuoc
-        btnResetProperty.setOnClickListener(v -> {
-            v.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
-            animationHelper.resetAnimation(animationTarget);
-        });
-
         return view;
     }
 
@@ -190,14 +144,7 @@ public class PhysicsAnimationFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        if (animationHelper != null) {
-            animationHelper.stopAnimation();
-            animationHelper = null;
-        }
-
-        animationTarget = null;
         physicsView = null;
-
         super.onDestroyView();
     }
 }
